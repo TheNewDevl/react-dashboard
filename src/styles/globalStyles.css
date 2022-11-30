@@ -1,0 +1,20 @@
+*, *:before, *:after {
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    font-family: 'Roboto', sans-serif;
+}
+
+body, h1, h2, h3, h4, h5, h6, p, ol, ul, a {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    font-weight: 400;
+}
+
+body {
+    background: #fff;
+}
+
+ol, ul {
+    list-style: none;
+}
