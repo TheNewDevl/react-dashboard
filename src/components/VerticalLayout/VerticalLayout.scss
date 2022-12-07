@@ -1,0 +1,25 @@
+.VerticalLayout {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 117px;
+  height: 100vh;
+  background-color: #020203;
+  z-index: -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 59px;
+
+  &__copy {
+    color: #fff;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 24px;
+    text-align: right;
+    align-self: flex-end;
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+  }
+}

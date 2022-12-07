@@ -9,16 +9,16 @@ const Header = () => {
       <nav>
         <ul>
           <li>
-            <a href="#">Accueil</a>
+            <a href="src/components/Header/Header#">Accueil</a>
           </li>
           <li>
-            <a href="#">Profil</a>
+            <a href="src/components/Header/Header#">Profil</a>
           </li>
           <li>
-            <a href="#">Réglage</a>
+            <a href="src/components/Header/Header#">Réglage</a>
           </li>
           <li>
-            <a href="#">Communauté</a>
+            <a href="src/components/Header/Header#">Communauté</a>
           </li>
         </ul>
       </nav>
