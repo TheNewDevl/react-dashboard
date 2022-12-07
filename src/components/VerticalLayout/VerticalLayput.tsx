@@ -1,7 +1,10 @@
 import "./VerticalLayout.scss";
 import Tag from "../Tag/Tag";
 
-const Tags = [
+/**
+ * @type {{alt: string, icon: string}[]}
+ */
+const Tags: { alt: string; icon: string }[] = [
   {
     alt: "Meditation",
     icon: "./meditation.svg",
@@ -20,6 +23,10 @@ const Tags = [
   },
 ];
 
+/**
+ * @return {JSX.Element}
+ * @constructor
+ */
 const VerticalLayout = () => {
   return (
     <div className="VerticalLayout">

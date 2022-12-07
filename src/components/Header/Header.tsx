@@ -1,5 +1,9 @@
 import "./Header.scss";
 
+/**
+ * @return {JSX.Element}
+ * @constructor
+ */
 const Header = () => {
   return (
     <header className="header">
