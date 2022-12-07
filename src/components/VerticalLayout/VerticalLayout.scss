@@ -21,5 +21,12 @@
     align-self: flex-end;
     writing-mode: vertical-lr;
     transform: rotate(180deg);
+    position: absolute;
+  }
+
+  &__tags__container {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
   }
 }
