@@ -1,9 +1,8 @@
 .LineChart {
+  min-height: 263px;
   position: relative;
 
   & svg {
-    width: 258px;
-    height: 263px;
     background-color: #FF0000;
   }
 
