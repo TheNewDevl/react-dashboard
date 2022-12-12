@@ -29,6 +29,21 @@ const LineChart = ({}: LineChartProps) => {
       .y(yScale)
       .curve(curveCardinal);
 
+    //Set the gradient
+    svg
+      .append("linearGradient")
+      .attr("id", "gradient")
+      .selectAll("stop")
+      .data([
+        { offset: "0%", color: "#ffffff", opacity: "0.4" },
+        { offset: "100%", color: "#ffffff", opacity: "1" },
+      ])
+      .enter()
+      .append("stop")
+      .attr("offset", (d) => d.offset)
+      .attr("stop-opacity", (d) => d.opacity)
+      .attr("stop-color", (d) => d.color);
+
     //Draw the line
     svg
       .selectAll("path")
@@ -36,7 +51,7 @@ const LineChart = ({}: LineChartProps) => {
       .join("path")
       .attr("d", (value) => pathLine(value.map((value) => value.sessionLength)))
       .attr("fill", "none")
-      .attr("stroke", "#fff")
+      .attr("stroke", "url(#gradient)")
       .attr("stroke-width", "2px");
 
     return () => {
