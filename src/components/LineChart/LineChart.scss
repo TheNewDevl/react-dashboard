@@ -1,6 +1,8 @@
 .LineChart {
-  min-height: 263px;
+  border-radius: 5px;
+  height: 263px;
   position: relative;
+  overflow: hidden;
 
   & svg {
     background-color: #FF0000;
@@ -17,5 +19,18 @@
     color: #fff;
     opacity: 0.5;
     max-width: 150px;
+  }
+}
+
+.lineChartAxis {
+  & path {
+    stroke: none;
+  }
+
+  & text {
+    fill: #fff;
+    opacity: 0.5;
+    font-size: 12px;
+    font-weight: 500;
   }
 }

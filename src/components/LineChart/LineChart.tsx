@@ -1,7 +1,7 @@
 import "./LineChart.scss";
 import { useEffect, useRef, useState } from "react";
 import { mockSessions } from "../../mocks/mockData";
-import { curveCardinal, line, scaleLinear, select } from "d3";
+import { axisBottom, curveCardinal, line, scaleLinear, select } from "d3";
 
 type LineChartProps = {};
 
@@ -13,6 +13,9 @@ const LineChart = ({}: LineChartProps) => {
     const svg = select(svgRef.current);
 
     const handleSVG = () => {
+      //Clean the svg before rendering
+      svg.selectAll("*").remove();
+
       // Dimensions
       const margin = { top: 78, right: 0, bottom: 60, left: 0 };
       const chartWidth = +select("#lineChartContainer").style("width").slice(0, -2) - margin.left - margin.right;
@@ -55,19 +58,45 @@ const LineChart = ({}: LineChartProps) => {
       //Draw the line
       svg
         .selectAll("path")
+        .attr("class", "line")
         .data([data])
         .join("path")
         .attr("d", (value) => pathLine(value.map((value) => value.sessionLength)))
         .attr("fill", "none")
-        .attr("stroke", "url(#gradient)")
-        .attr("stroke-width", "2px");
+        .attr("stroke", "url(#gradient)");
+
+      //Append bottom axis
+      svg
+        .append("g")
+        .attr("class", "lineChartAxis")
+        .attr("transform", `translate(0, ${chartHeight + margin.top + margin.bottom / 2})`)
+        .call(
+          axisBottom(
+            scaleLinear()
+              .domain([0, data.length - 1])
+              .range([20, chartWidth - 20])
+          )
+            .ticks(data.length)
+            .tickFormat((v, i) => {
+              const mapDays: { [key: number]: string } = {
+                1: "L",
+                2: "M",
+                3: "M",
+                4: "J",
+                5: "V",
+                6: "S",
+                7: "D",
+              };
+              return data[i] ? mapDays[data[i].day] : "";
+            })
+            .tickSizeInner(0)
+        );
     };
     handleSVG();
     window.addEventListener("resize", handleSVG);
 
     return () => {
-      svg.selectAll("path").remove();
-      svg.selectAll("linearGradient").remove();
+      svg.selectAll("*").remove();
       window.removeEventListener("resize", handleSVG);
     };
   }, [data]);
