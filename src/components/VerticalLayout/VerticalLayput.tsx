@@ -31,8 +31,8 @@ const VerticalLayout = () => {
   return (
     <div className="VerticalLayout">
       <div className="VerticalLayout__tags__container">
-        {Tags.map(({ alt, icon }) => (
-          <Tag alt={alt} icon={icon} />
+        {Tags.map(({ alt, icon }, index) => (
+          <Tag key={index} alt={alt} icon={icon} />
         ))}
       </div>
       <p className="VerticalLayout__copy">Copiryght, SportSee 2020</p>
