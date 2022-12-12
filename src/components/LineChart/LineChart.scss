@@ -1,0 +1,22 @@
+.LineChart {
+  position: relative;
+
+  & svg {
+    width: 258px;
+    height: 263px;
+    background-color: #FF0000;
+  }
+
+  & .legend {
+    position: absolute;
+    top: 30px;
+    left: 35px;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0;
+    color: #fff;
+    opacity: 0.5;
+    max-width: 150px;
+  }
+}
