@@ -9,6 +9,8 @@ header {
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 
   & .logo-container {
+    min-height: 68px;
+    min-width: 200px;
     height: 61px;
     width: 178px;
 
