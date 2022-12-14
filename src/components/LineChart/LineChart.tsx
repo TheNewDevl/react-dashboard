@@ -1,15 +1,23 @@
 import "./LineChart.scss";
 import { useEffect, useRef, useState } from "react";
-import { mockSessions } from "../../mocks/mockData";
 import { axisBottom, curveCardinal, line, scaleLinear, select } from "d3";
+import PropTypes from "prop-types";
 
 interface Data {
   day: number;
   sessionLength: number;
 }
 
-const LineChart = () => {
-  const [data, setData] = useState(mockSessions);
+/**
+ * @param {Object[]} graphData - The data to display on the graph
+ * @param {number} graphData[].day - The day of the session
+ * @param {number} graphData[].sessionLength - The average length of the day
+ * @return {JSX.Element}
+ * @example
+ * <LineChart graphData={data} />
+ */
+const LineChart = ({ graphData }: { graphData: Data[] }) => {
+  const [data, setData] = useState<Data[]>([]);
   const svgRef = useRef<SVGSVGElement>(null);
 
   const margin = { top: 78, right: 0, bottom: 60, left: 0 };
@@ -25,6 +33,9 @@ const LineChart = () => {
   };
 
   useEffect(() => {
+    //set data state
+    setData(graphData);
+
     //D3 select SVG
     const svg = select(svgRef.current);
 
@@ -201,6 +212,15 @@ const LineChart = () => {
       <svg ref={svgRef}></svg>
     </div>
   );
+};
+
+LineChart.propTypes = {
+  graphData: PropTypes.arrayOf(
+    PropTypes.exact({
+      day: PropTypes.number.isRequired,
+      sessionLength: PropTypes.number.isRequired,
+    })
+  ).isRequired,
 };
 
 export default LineChart;
