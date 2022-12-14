@@ -1,0 +1,38 @@
+.KeyDataCard {
+  background-color: #FBFBFB;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.0212249);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  padding: 32px;
+  gap: 24px;
+
+  & .img_container {
+    & img {
+      width: 60px;
+    }
+  }
+
+  & .content {
+    display: flex;
+    flex-direction: column;
+
+    & h2 {
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 24px;
+      text-align: left;
+      color: #282D30;
+    }
+
+    & p {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 24px;
+      text-align: left;
+      color: #74798C;
+    }
+  }
+}
+
+/** Created by carlos on 14/12/2022 */
