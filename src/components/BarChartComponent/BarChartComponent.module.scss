@@ -1,0 +1,44 @@
+.BarChartComponent {
+  position: relative;
+
+  & svg {
+    background-color: #e7e7e7;
+    border-radius: 5px;
+  }
+
+  & .name {
+    color: #20253A;
+    top: 24px;
+    left: 32px;
+    z-index: 1;
+    position: absolute;
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  & [class*="recharts-legend-item"] {
+    margin-left: 30px;
+
+    & span {
+      color: #74798C !important;
+      font-size: 14px;
+      font-weight: 500;
+      margin-left: 10px;
+    }
+  }
+
+  & .tooltip {
+    background-color: #FF0101;
+    padding: 6px;
+
+    & .value {
+      color: #fff;
+      font-size: 7px;
+      font-weight: 500;
+      line-height: 24px;
+      text-align: center;
+    }
+  }
+}
+
+/** Created by carlos on 16/12/2022 */
