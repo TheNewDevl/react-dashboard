@@ -9,17 +9,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "d3": "^7.6.1",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.5",
+    "recharts": "^2.2.0",
     "sass": "^1.56.1"
   },
   "devDependencies": {
     "@types/d3": "^7.4.0",
     "@types/react": "^18.0.24",
     "@types/react-dom": "^18.0.8",
+    "@types/recharts": "^1.8.24",
     "@vitejs/plugin-react": "^2.2.0",
     "typescript": "^4.6.4",
     "vite": "^3.2.3"

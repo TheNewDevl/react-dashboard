@@ -1,0 +1,45 @@
+.LineChart {
+  position: relative;
+
+  & .axis {
+    font-size: 12px;
+    fill: #fff;
+    opacity: 0.5;
+    font-weight: 500;
+  }
+
+  & svg {
+    background-color: #FF0000;
+    border-radius: 5px;
+  }
+
+  & .custom_legend {
+    position: absolute;
+    top: -50px;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0;
+    color: #fff;
+    opacity: 0.5;
+    max-width: 150px;
+  }
+
+  & .tooltip {
+    background-color: #fff;
+    padding: 7px;
+    text-align: center;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & .value {
+      font-size: 8px;
+      font-weight: 500;
+      line-height: 0;
+    }
+  }
+}
+
+/** Created by carlos on 15/12/2022 */

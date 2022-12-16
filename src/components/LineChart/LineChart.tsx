@@ -1,7 +1,18 @@
-import "./LineChart.scss";
-import { useEffect, useRef, useState } from "react";
-import { axisBottom, curveCardinal, line, scaleLinear, select } from "d3";
+import style from "./LineChart.module.scss";
+import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
+import {
+  CartesianGrid,
+  Legend,
+  LegendProps,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  TooltipProps,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 interface Data {
   day: number;
@@ -14,13 +25,40 @@ interface Data {
  * @param {number} graphData[].sessionLength - The average length of the day
  * @return {JSX.Element}
  * @example
- * <LineChart graphData={data} />
+ * <LineChartComponent graphData={data} />
  */
-const LineChart = ({ graphData }: { graphData: Data[] }) => {
+const LineChartComponent = ({ graphData }: { graphData: Data[] }) => {
   const [data, setData] = useState<Data[]>([]);
-  const svgRef = useRef<SVGSVGElement>(null);
+  useEffect(() => {
+    setData(graphData);
+  }, []);
 
-  const margin = { top: 78, right: 0, bottom: 60, left: 0 };
+  const chartRef = useRef<HTMLDivElement | null>(null);
+  const margin = { top: 70, right: 0, left: 0, bottom: 30 };
+  const height = 263;
+  const [isResizing, setIsResizing] = useState(false);
+
+  /** Update the left margin of the chart depending on chart width */
+  const handleMarginLeft = () => {
+    if (chartRef?.current?.offsetWidth) {
+      const width = chartRef.current.offsetWidth;
+      margin.left = -width / 7 + 10;
+    }
+  };
+
+  useEffect(() => {
+    //Prevent unnecessary CPU usage by not updating margin on every pixel of the resize
+    const handleResize = () => !isResizing && setIsResizing(true);
+    handleMarginLeft();
+    window.addEventListener("resize", handleResize);
+    if (isResizing) {
+      setTimeout(() => {
+        setIsResizing(false);
+        handleMarginLeft();
+      }, 50);
+    }
+    return () => window.removeEventListener("resize", handleResize);
+  }, [chartRef, isResizing]);
 
   const mapDays: { [key: number]: string } = {
     1: "L",
@@ -32,189 +70,122 @@ const LineChart = ({ graphData }: { graphData: Data[] }) => {
     7: "D",
   };
 
-  useEffect(() => {
-    //set data state
-    setData(graphData);
+  /**
+   * Custom Recharts Tooltip, display the exact value of the point in a div with a custom style
+   * @param {Object} TooltipProps - The props of the tooltip
+   * @param {Array} TooltipProps.payload - The data of the point
+   * @param {number} TooltipProps.payload[0].value - The value of the point
+   * @param {number} TooltipProps.payload[0].day - The day of the point
+   * @param {boolean} TooltipProps.active - The state of the tooltip
+   * @return {JSX.Element | null}
+   */
+  const CustomTooltip = ({ active, payload }: TooltipProps<string, string>) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className={style.tooltip}>
+          <p className={style.value}>{`${payload[0].value} min`}</p>
+        </div>
+      );
+    }
+    return null;
+  };
 
-    //D3 select SVG
-    const svg = select(svgRef.current);
+  /**
+   * Custom Recharts Legend, update the left position of the legend depending on the chart width
+   * @param {Array?} payload
+   * @param {{top?: number, left?: number, bottom?: number, right?: number} | undefined} margin
+   * @return {JSX.Element | null}
+   */
+  const CustomLegend = ({ payload, margin }: LegendProps) => {
+    return payload && payload.length ? (
+      <p
+        style={{ left: `${margin?.left ? 35 - margin.left : 35}px` }}
+        className={style.custom_legend}
+      >
+        {payload[0].value}
+      </p>
+    ) : null;
+  };
 
-    //Tooltip that will display the exact value of the point
-    const ToolTip = select("#lineChartContainer")
-      .append("div")
-      .attr("class", "tooltip")
-      .style("opacity", 0);
-
-    /**
-     * Hide or display a point circle
-     * @param {boolean} toDisplay if true, display the tooltip, else hide it
-     * @param {{day: number, sessionLength: number}} value use to retrieve the correct circle
-     */
-    const setCircleOpacity = (toDisplay: boolean, value: Data) => {
-      svg
-        .selectAll("circle")
-        .nodes()
-        .forEach((node) => {
-          const circle = select(node);
-          if (circle.attr("data-day") === `${value.day}`) {
-            circle.style("opacity", toDisplay ? "1" : "0");
-          }
-        });
-    };
-    const handleSVG = () => {
-      //Clean the svg before rendering
-      svg.selectAll("*").remove();
-
-      // Dimensions
-      const chartWidth =
-        parseInt(select("#lineChartContainer").style("width")) - margin.left - margin.right;
-      const chartHeight =
-        parseInt(select("#lineChartContainer").style("height")) - margin.top - margin.bottom;
-
-      //Apply the dimensions to the svg
-      svg
-        .attr("width", chartWidth + margin.left + margin.right)
-        .attr("height", chartHeight + margin.top + margin.bottom);
-
-      //X and Y scales
-      const xScale = scaleLinear()
-        .domain([0, data.length - 1])
-        .range([margin.left, chartWidth - margin.right]);
-      const yScale = scaleLinear()
-        .domain([0, Math.max(...data.map((d) => d.sessionLength))])
-        .range([chartHeight + margin.bottom, margin.top]);
-
-      //Set line(x,y) path
-      const pathLine = line<number>()
-        .x((value, index) => xScale(index))
-        .y(yScale)
-        .curve(curveCardinal);
-
-      /**
-       * Display the tooltip setting opacity, position and text
-       * @param {{day: number, sessionLength: number}} value
-       */
-      const toolTipDisplay = (value: Data) => {
-        let xPos = xScale(data.indexOf(value));
-        const tooltipWidth = +ToolTip.style("width").slice(0, -2);
-        const totalWidth = chartWidth + margin.left + margin.right;
-        ToolTip.style("opacity", "1")
-          .transition()
-          .duration(200)
-          .style("opacity", 1)
-          .style("left", () =>
-            xPos + tooltipWidth > totalWidth ? `${xPos - tooltipWidth}px` : `${xPos}px`
-          )
-          .style("top", `${yScale(value.sessionLength) - 50}px`)
-          .text(value.sessionLength + " min");
-      };
-
-      //Set the gradient
-      svg
-        .append("linearGradient")
-        .attr("id", "gradient")
-        .selectAll("stop")
-        .data([
-          { offset: "0%", color: "#ffffff", opacity: "0.4" },
-          { offset: "100%", color: "#ffffff", opacity: "1" },
-        ])
-        .enter()
-        .append("stop")
-        .attr("offset", (d) => d.offset)
-        .attr("stop-opacity", (d) => d.opacity)
-        .attr("stop-color", (d) => d.color);
-
-      //Handle Rectangle day delimiter
-      svg
-        .append("g")
-        .selectAll("dot")
-        .data(data)
-        .join("rect")
-        .attr("class", "delimiter-rect")
-        .attr("x", (value, index) => xScale(index))
-        .attr("y", 0)
-        .attr("height", chartHeight + margin.bottom + margin.top)
-        .on("mouseenter", (event, value) => {
-          //Display delimiter rect
-          select(event.currentTarget).style("opacity", "0.1");
-          //Display tooltip
-          toolTipDisplay(value);
-          //Display circle
-          setCircleOpacity(true, value);
-        })
-        .on("mouseout", (event, value) => {
-          //Hide delimiter rect
-          select(event.currentTarget).style("opacity", "0").transition();
-          //Hide tooltip
-          ToolTip.style("opacity", 0);
-          //Hide circle
-          setCircleOpacity(false, value);
-        });
-
-      //Set the path line
-      svg
-        .selectAll("path")
-        .attr("class", "line")
-        .data([data])
-        .join("path")
-        .attr("d", (value) => pathLine(value.map((value) => value.sessionLength)))
-        .attr("fill", "none")
-        .attr("stroke", "url(#gradient)");
-
-      //Handle circle Points
-      svg
-        .selectAll("circle")
-        .data(data)
-        .join("circle")
-        .attr("class", "point-circle")
-        .attr("cx", (value, index) => xScale(index))
-        .attr("cy", (value) => yScale(value.sessionLength))
-        .attr("r", 3)
-        .attr("data-day", (value) => value.day)
-        .on("mouseover", (event, value) => {
-          select(event.target).transition().duration(200).style("opacity", "1");
-          toolTipDisplay(value);
-        })
-        .on("mouseout", (event) => {
-          select(event.target).transition().duration(200).style("opacity", "0");
-          ToolTip.style("opacity", 0);
-        });
-
-      //Append bottom axis
-      svg
-        .append("g")
-        .attr("class", "lineChartAxis")
-        .attr("transform", `translate(0, ${chartHeight + margin.top + margin.bottom / 2})`)
-        .call(
-          axisBottom(
-            scaleLinear()
-              .domain([0, data.length - 1])
-              .range([20, chartWidth - 20])
-          )
-            .ticks(data.length)
-            .tickFormat((v, i) => (data[i] ? mapDays[data[i].day] : ""))
-            .tickSizeInner(0)
-        );
-    };
-    handleSVG();
-    window.addEventListener("resize", handleSVG);
-
-    return () => {
-      svg.selectAll("*").remove();
-      ToolTip.remove();
-      window.removeEventListener("resize", handleSVG);
-    };
-  }, [data]);
+  /**
+   * Return custom ticks for the XAxis, for convenience the date will contain last sunday to fill the line
+   * But we only want to display the 7 day of the week so we recalculate the ticks position depending on chart width
+   * @param {Object} props
+   * @param {number} props.y y axis tick position
+   * @param {number} props.x x axis tick position
+   * @param {Array} props.payload payload of the tick
+   * @return {null | JSX.Element}
+   */
+  const CustomizedAxisTick = ({ x, y, payload }: any) => {
+    const p = 20;
+    let spacing = chartRef.current
+      ? ((chartRef.current.clientWidth - p * 2) / 6) * (payload.index - 1) + p
+      : x;
+    return payload.index === 0 ? null : (
+      <g transform={`translate(${spacing},${y})`}>
+        <text className={style.axis} x={0} y={0} textAnchor="middle" fill="#666">
+          {mapDays[payload.value]}
+        </text>
+      </g>
+    );
+  };
 
   return (
-    <div id="lineChartContainer" className="LineChart">
-      <p className="legend">Durée moyenne des sessions</p>
-      <svg ref={svgRef}></svg>
+    <div ref={chartRef} className={style.LineChart}>
+      <ResponsiveContainer height={height}>
+        <LineChart height={height} data={data} margin={margin}>
+          <defs>
+            <linearGradient id="lineGradient">
+              <stop offset="40%" stopColor="#ffffff" stopOpacity={0.4} />
+              <stop offset="100%" stopColor="#ffffff" stopOpacity={1} />
+            </linearGradient>
+          </defs>
+          <CartesianGrid strokeDasharray="3 3" />
+          <YAxis
+            width={0}
+            tickFormatter={() => ""}
+            tickSize={0}
+            axisLine={false}
+            domain={[0, Math.max(...data.map((d) => d.sessionLength))]}
+          />
+          <XAxis
+            tickMargin={30}
+            axisLine={false}
+            tickSize={0}
+            dataKey="day"
+            tick={<CustomizedAxisTick />}
+          />
+          <Tooltip
+            cursor={false}
+            wrapperStyle={{ outline: "none" }}
+            content={<CustomTooltip />}
+            separator=""
+          />
+          <Line
+            type="monotone"
+            dataKey="sessionLength"
+            stroke="url(#lineGradient)"
+            strokeWidth={2}
+            dot={false}
+            activeDot={{
+              r: 4,
+              fill: "#ffffff",
+              stroke: "rgba(255, 255, 255, 0.2)",
+              strokeWidth: 10,
+            }}
+          />
+          <Legend
+            verticalAlign={"top"}
+            content={<CustomLegend />}
+            payload={[{ value: "Durée moyenne des sessions" }]}
+          />
+        </LineChart>
+      </ResponsiveContainer>
     </div>
   );
 };
 
-LineChart.propTypes = {
+LineChartComponent.propTypes = {
   graphData: PropTypes.arrayOf(
     PropTypes.exact({
       day: PropTypes.number.isRequired,
@@ -223,5 +194,5 @@ LineChart.propTypes = {
   ).isRequired,
 };
 
-export default LineChart;
+export default LineChartComponent;
 /** Created by carlos on 07/12/2022 */
