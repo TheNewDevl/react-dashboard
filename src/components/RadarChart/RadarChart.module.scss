@@ -1,0 +1,10 @@
+.RadarChart {
+  width: 100%;
+  border-radius: 5px;
+
+  & svg {
+    border-radius: 5px;
+  }
+}
+
+/** Created by carlos on 16/12/2022 */
