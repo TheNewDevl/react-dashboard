@@ -1,5 +1,31 @@
-.Profil {
+.content_wrapper {
+  margin-top: 77px;
+  max-width: 100%;
+  display: flex;
+  gap: 30px;
+}
 
+.graph_container {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 30px;
+
+  & .graph_full_width {
+    width: 100%;
+  }
+}
+
+.graph_flex {
+  width: 100%;
+  display: flex;
+  gap: 30px;
+}
+
+.key_data_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 39px;
 }
 
 /** Created by carlos on 14/12/2022 */

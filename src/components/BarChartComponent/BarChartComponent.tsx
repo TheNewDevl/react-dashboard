@@ -49,8 +49,7 @@ export const BarChartComponent = ({ activityData }: BarChartComponentProps) => {
    * @param {boolean} TooltipProps.active - The state of the tooltip
    * @return {JSX.Element | null}
    */
-  const CustomTooltip = ({ active, payload, ...rest }: TooltipProps<string, string>) => {
-    console.log({ payload, rest });
+  const CustomTooltip = ({ active, payload }: TooltipProps<string, string>) => {
     if (active && payload && payload.length) {
       return (
         <div className={style.tooltip}>
@@ -65,7 +64,7 @@ export const BarChartComponent = ({ activityData }: BarChartComponentProps) => {
   return (
     <div className={style.BarChartComponent}>
       <p className={style.name}>Activité quotidienne</p>
-      <ResponsiveContainer width="100%" height={320}>
+      <ResponsiveContainer width="99%" height={320}>
         <BarChart barSize={7} data={data} margin={margin} barGap={8}>
           <CartesianGrid vertical={false} strokeDasharray="2 1" />
           <XAxis
