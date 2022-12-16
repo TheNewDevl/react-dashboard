@@ -34,21 +34,21 @@ const LineChartComponent = ({ graphData }: { graphData: Data[] }) => {
   }, []);
 
   const chartRef = useRef<HTMLDivElement | null>(null);
-  const margin = { top: 70, right: 0, left: 0, bottom: 30 };
+  const [margin, setMargin] = useState({ top: 70, right: 0, left: 0, bottom: 30 });
   const height = 263;
   const [isResizing, setIsResizing] = useState(false);
 
-  /** Update the left margin of the chart depending on chart width */
   const handleMarginLeft = () => {
     if (chartRef?.current?.offsetWidth) {
       const width = chartRef.current.offsetWidth;
-      margin.left = -width / 7 + 10;
+      setMargin({ ...margin, left: -width / 7 + 10 });
     }
   };
 
   useEffect(() => {
     //Prevent unnecessary CPU usage by not updating margin on every pixel of the resize
     const handleResize = () => !isResizing && setIsResizing(true);
+    /** Update the left margin of the chart depending on chart width */
     handleMarginLeft();
     window.addEventListener("resize", handleResize);
     if (isResizing) {
@@ -132,7 +132,7 @@ const LineChartComponent = ({ graphData }: { graphData: Data[] }) => {
 
   return (
     <div ref={chartRef} className={style.LineChart}>
-      <ResponsiveContainer height={height}>
+      <ResponsiveContainer height={height} width="99%">
         <LineChart height={height} data={data} margin={margin}>
           <defs>
             <linearGradient id="lineGradient">
