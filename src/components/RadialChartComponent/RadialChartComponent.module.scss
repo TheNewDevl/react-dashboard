@@ -1,0 +1,49 @@
+.RadialChartComponent {
+  position: relative;
+  border-radius: 5px;
+  width: 100%;
+
+  & svg {
+    background-color: #FBFBFB;
+  }
+
+  & .title {
+    position: absolute;
+    z-index: 1;
+    top: 24px;
+    left: 30px;
+    color: #20253A;
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  & .legend {
+    z-index: 1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    & span {
+      display: block;
+      text-align: center;
+      line-height: 26px;
+
+      &:nth-child(1) {
+        font-size: 26px;
+        font-weight: 700;
+        color: #282D30;
+        line-height: 30px;
+
+      }
+
+      &:nth-child(2), &:nth-child(3) {
+        font-size: 16px;
+        font-weight: 500;
+        color: #74798C;
+      }
+    }
+  }
+}
+
+/** Created by carlos on 16/12/2022 */

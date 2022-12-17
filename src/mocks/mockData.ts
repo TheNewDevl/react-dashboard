@@ -82,3 +82,10 @@ export const mockSessionsActivity = [
     calories: 390,
   },
 ];
+
+export const mockScore = [
+  {
+    name: "score",
+    value: 25,
+  },
+];
