@@ -1,4 +1,4 @@
-import { AverageDay, performanceData } from "../types/types";
+import { AverageDay, performanceData, User } from "../types/types";
 
 export class DataModels {
   /**
@@ -83,11 +83,77 @@ export class DataModels {
     }
   }
 
-  activity(data: any) {
-    return data;
+  /**
+   * Return an array of objects
+   * If any error occurs in the fetch, return and empty array.
+   * @param {Object} data from API || undefined
+   * @param {Array} data.data
+   * @param {string} data.data[].day - date
+   * @param {number} data.data[].kilogram
+   * @param {number} data.data[].calories
+   * @return {{"Poids (kg)": number, "Calories brulées (kCal)": number, day: string | number}[] | any[]}
+   */
+  activity(data: { data: { sessions: { day: string; kilogram: number; calories: number }[] } }) {
+    if (data && data.data && data.data.sessions && data.data.sessions.length > 0) {
+      return data.data.sessions.map((v, index) => {
+        // Convert the date into the day of the month
+        const day = new Date(v.day).getDate();
+        return {
+          day: day ? day : v.day ? v.day : index + 1,
+          "Poids (kg)": v.kilogram ? v.kilogram : 0,
+          "Calories brulées (kCal)": v.calories ? v.calories : 0,
+        };
+      });
+    } else {
+      return [];
+    }
   }
 
-  user(data: any) {
-    return data;
+  /**
+   * Return an object with the user data mapped from API response data.
+   * The object will contain firstName, today score, and key data for the user.
+   * If any information is missing, the value will be set to an empty string or empty array.
+   * @param data from API || undefined
+   * @return {User}
+   */
+  user(data: any): User {
+    const user: User = { dayScore: [], firstName: "", keyData: [] };
+    if (data && data.data) {
+      //firstName
+      if (
+        data.data.hasOwnProperty("userInfos") &&
+        data.data.userInfos.hasOwnProperty("firstName")
+      ) {
+        user.firstName = data.data.userInfos.firstName;
+      }
+
+      //dayScore
+      const scoreKeyFilter = Object.keys(data.data).filter((key) => /score/i.test(key));
+      if (scoreKeyFilter.length > 0) {
+        user.dayScore.push({
+          name: "Score",
+          value: data.data[scoreKeyFilter[0]],
+        });
+      }
+      //keyData
+      if (data.data.hasOwnProperty("keyData")) {
+        for (let [key, value] of Object.entries(data.data.keyData as { [key: string]: number })) {
+          if (/calor/i.test(key)) {
+            user.keyData.push({ Calories: `${(value / 1000).toFixed(3).replace(".", ",")}kCal` });
+          }
+          if (/prote/i.test(key)) {
+            user.keyData.push({ Protéines: `${value}g` });
+          }
+          if (/carbo/i.test(key)) {
+            user.keyData.push({ Glucides: `${value}g` });
+          }
+          if (/lipid/i.test(key)) {
+            user.keyData.push({ Lipides: `${value}g` });
+          }
+        }
+      }
+    }
+
+    return user;
   }
 }

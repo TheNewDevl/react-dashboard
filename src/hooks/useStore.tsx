@@ -3,7 +3,6 @@ import Store from "../api/Api";
 import { UseStoreReturn } from "../types/types";
 
 export const useStore = (userId: string | undefined): UseStoreReturn => {
-  const [user, setUser] = useState(null);
   const [datas, setDatas] = useState<UseStoreReturn>({} as UseStoreReturn);
 
   useEffect(() => {
@@ -13,6 +12,8 @@ export const useStore = (userId: string | undefined): UseStoreReturn => {
         setDatas({
           averageSessions: await Store.averageSessions(id),
           perfData: await Store.performance(id),
+          activityData: await Store.activity(id),
+          user: await Store.user(id),
         });
       } catch (e: any) {
         console.log(e);
@@ -21,5 +22,10 @@ export const useStore = (userId: string | undefined): UseStoreReturn => {
     getDatas();
   }, [userId]);
 
-  return { averageSessions: datas.averageSessions, perfData: datas.perfData };
+  return {
+    averageSessions: datas.averageSessions,
+    perfData: datas.perfData,
+    activityData: datas.activityData,
+    user: datas.user,
+  };
 };

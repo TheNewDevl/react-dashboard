@@ -1,5 +1,6 @@
 import { DataModels } from "../model/DataModels";
-import { mockPerfData, mockSessions } from "../mocks/mockData";
+import { mockPerfData, mockSessions, mockSessionsActivity, mockUserData } from "../mocks/mockData";
+import { User } from "../types/types";
 
 export class Api {
   private readonly _baseUrl: string;
@@ -65,13 +66,13 @@ class Store {
 
   async activity(userId: string | null): Promise<any> {
     return userId === "sample"
-      ? mockPerfData
+      ? mockSessionsActivity
       : this.dataModels.activity(await this._api.get(`${userId}/activity`, new Headers()));
   }
 
-  async user(userId: string | null): Promise<any> {
+  async user(userId: string | null): Promise<User> {
     return userId === "sample"
-      ? mockPerfData
+      ? mockUserData
       : this.dataModels.user(await this._api.get(`${userId}`, new Headers()));
   }
 }
