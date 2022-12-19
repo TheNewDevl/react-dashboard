@@ -1,15 +1,20 @@
+@use '../../styles/utils/mixins';
+
 .KeyDataCard {
   background-color: #FBFBFB;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.0212249);
   border-radius: 5px;
   display: flex;
   align-items: center;
-  padding: 32px;
+  padding: mixins.clampCalculator(10px, 32px);
   gap: 24px;
 
   & .img_container {
+    display: flex;
+    align-items: center;
+
     & img {
-      width: 60px;
+      width: mixins.clampCalculator(40px, 60px);
     }
   }
 
@@ -18,7 +23,7 @@
     flex-direction: column;
 
     & h2 {
-      font-size: 20px;
+      font-size: mixins.clampCalculator(14px, 20px);
       font-weight: 700;
       line-height: 24px;
       text-align: left;
@@ -26,7 +31,7 @@
     }
 
     & p {
-      font-size: 14px;
+      font-size: mixins.clampCalculator(12px, 14px);
       font-weight: 500;
       line-height: 24px;
       text-align: left;

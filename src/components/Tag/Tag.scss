@@ -1,5 +1,7 @@
+@use '../../styles/utils/mixins';
+
 .Tag {
-  width: 64px;
+  width: mixins.clampCalculator(40px, 64px, 1000px);
   aspect-ratio: 1 / 1;
   background-color: #fff;
   border: none;

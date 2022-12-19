@@ -8,3 +8,17 @@
   $return-value: clamp(#{$min-size}, #{$y-axis-intersection} + #{$slope} * 100vw, #{$max-size});
   @return $return-value;
 }
+
+$screen-sizes: (
+        mobile: 375px,
+        tablet: 768px,
+        small-desktop: 1000px,
+        desktop: 1250px,
+        big-size: 1440px,
+);
+
+@mixin media($screen-type: 768px) {
+  @media screen and (max-width: map-get($screen-sizes, $screen-type)) {
+    @content;
+  }
+}

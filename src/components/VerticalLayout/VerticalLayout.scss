@@ -1,9 +1,11 @@
+@use '../../styles/utils/mixins';
+
 .VerticalLayout {
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
-  width: 117px;
+  width: mixins.clampCalculator(70px, 117px, 1000px, 1440px);
   height: 100vh;
   background-color: #020203;
   z-index: -1;
@@ -11,6 +13,24 @@
   align-items: center;
   justify-content: center;
   padding-bottom: 59px;
+
+  @include mixins.media(desktop) {
+    top: unset;
+    width: 100vw;
+    height: fit-content;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    padding: 10px;
+    align-items: center;
+
+  }
+  @include mixins.media(tablet) {
+    flex-direction: column;
+    padding: 10px 0 0 0;
+
+  }
 
   &__copy {
     color: #fff;
@@ -22,11 +42,24 @@
     writing-mode: vertical-lr;
     transform: rotate(180deg);
     position: absolute;
+    @include mixins.media(desktop) {
+      writing-mode: unset;
+      transform: rotate(0);
+      right: 20px;
+      align-self: center;
+    }
+    @include mixins.media(tablet) {
+      font-size: 8px;
+      position: unset;
+    }
   }
 
   &__tags__container {
     display: flex;
     flex-direction: column;
     gap: 28px;
+    @include mixins.media(desktop) {
+      flex-direction: row;
+    }
   }
 }
