@@ -132,7 +132,7 @@ export class DataModels {
       if (scoreKeyFilter.length > 0) {
         user.dayScore.push({
           name: "Score",
-          value: data.data[scoreKeyFilter[0]],
+          value: data.data[scoreKeyFilter[0]] * 100,
         });
       }
       //keyData
