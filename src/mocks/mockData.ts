@@ -1,4 +1,6 @@
-export const mockSessions = [
+import { AverageDay, performanceData } from "../types/types";
+
+export const mockSessions: AverageDay[] = [
   { day: 7, sessionLength: 100 },
   { day: 1, sessionLength: 50 },
   { day: 2, sessionLength: 500 },
@@ -16,7 +18,7 @@ export const mockKeyData = [
   { Lipides: "50g" },
 ];
 
-export const mockPerfData = [
+export const mockPerfData: performanceData[] = [
   { value: 110, category: "Intensité" },
   { value: 220, category: "Vitesse" },
   { value: 80, category: "Force" },
