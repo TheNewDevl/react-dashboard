@@ -9,14 +9,10 @@ import {
 } from "recharts";
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-
-interface perfData {
-  value: number;
-  category: string;
-}
+import { performanceData } from "../../types/types";
 
 interface RadarChartProps {
-  perfData: perfData[];
+  perfData: performanceData[];
 }
 
 /**
@@ -27,7 +23,7 @@ interface RadarChartProps {
  * @return {JSX.Element}
  */
 export const RadarChartComponent = ({ perfData }: RadarChartProps) => {
-  const [data, setData] = useState<perfData[]>([]);
+  const [data, setData] = useState<performanceData[]>([]);
 
   useEffect(() => {
     setData(perfData);

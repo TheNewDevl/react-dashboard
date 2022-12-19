@@ -13,22 +13,19 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-
-interface Data {
-  day: number;
-  sessionLength: number;
-}
+import { AverageDay } from "../../types/types";
 
 /**
  * @param {Object[]} graphData - The data to display on the graph
- * @param {number} graphData[].day - The day of the session
+ * @param {string} graphData[].day - The day of the session
  * @param {number} graphData[].sessionLength - The average length of the day
  * @return {JSX.Element}
  * @example
  * <LineChartComponent graphData={data} />
  */
-const LineChartComponent = ({ graphData }: { graphData: Data[] }) => {
-  const [data, setData] = useState<Data[]>([]);
+
+const LineChartComponent = ({ graphData }: { graphData: AverageDay[] }) => {
+  const [data, setData] = useState<AverageDay[]>([]);
   useEffect(() => {
     setData(graphData);
   }, []);
@@ -60,22 +57,12 @@ const LineChartComponent = ({ graphData }: { graphData: Data[] }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, [chartRef, isResizing]);
 
-  const mapDays: { [key: number]: string } = {
-    1: "L",
-    2: "M",
-    3: "M",
-    4: "J",
-    5: "V",
-    6: "S",
-    7: "D",
-  };
-
   /**
    * Custom Recharts Tooltip, display the exact value of the point in a div with a custom style
    * @param {Object} TooltipProps - The props of the tooltip
    * @param {Array} TooltipProps.payload - The data of the point
    * @param {number} TooltipProps.payload[0].value - The value of the point
-   * @param {number} TooltipProps.payload[0].day - The day of the point
+   * @param {string} TooltipProps.payload[0].day - The day of the point
    * @param {boolean} TooltipProps.active - The state of the tooltip
    * @return {JSX.Element | null}
    */
@@ -124,7 +111,7 @@ const LineChartComponent = ({ graphData }: { graphData: Data[] }) => {
     return payload.index === 0 ? null : (
       <g transform={`translate(${spacing},${y})`}>
         <text className={style.axis} x={0} y={0} textAnchor="middle" fill="#666">
-          {mapDays[payload.value]}
+          {payload.value}
         </text>
       </g>
     );
@@ -188,7 +175,7 @@ const LineChartComponent = ({ graphData }: { graphData: Data[] }) => {
 LineChartComponent.propTypes = {
   graphData: PropTypes.arrayOf(
     PropTypes.exact({
-      day: PropTypes.number.isRequired,
+      day: PropTypes.string.isRequired,
       sessionLength: PropTypes.number.isRequired,
     })
   ).isRequired,

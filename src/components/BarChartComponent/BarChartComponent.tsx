@@ -12,12 +12,7 @@ import {
 } from "recharts";
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-
-interface ActivityData {
-  day: number;
-  kilogram: number;
-  calories: number;
-}
+import { ActivityData } from "../../types/types";
 
 interface BarChartComponentProps {
   activityData: ActivityData[];
@@ -60,7 +55,6 @@ export const BarChartComponent = ({ activityData }: BarChartComponentProps) => {
     }
     return null;
   };
-
   return (
     <div className={style.BarChartComponent}>
       <p className={style.name}>Activité quotidienne</p>
@@ -97,8 +91,26 @@ export const BarChartComponent = ({ activityData }: BarChartComponentProps) => {
             align="right"
           />
 
-          <Bar radius={[3, 3, 0, 0]} yAxisId="right" dataKey="kilogram" fill="#282D30" />
-          <Bar radius={[3, 3, 0, 0]} yAxisId="left" dataKey="calories" fill="#E60000" />
+          <Bar
+            radius={[3, 3, 0, 0]}
+            yAxisId="right"
+            dataKey={
+              activityData[0] && Object.keys(activityData[0]).length >= 3
+                ? Object.keys(activityData[0])[1]
+                : ""
+            }
+            fill="#282D30"
+          />
+          <Bar
+            radius={[3, 3, 0, 0]}
+            yAxisId="left"
+            dataKey={
+              activityData[0] && Object.keys(activityData[0]).length >= 3
+                ? Object.keys(activityData[0])[2]
+                : ""
+            }
+            fill="#E60000"
+          />
         </BarChart>
       </ResponsiveContainer>
     </div>
