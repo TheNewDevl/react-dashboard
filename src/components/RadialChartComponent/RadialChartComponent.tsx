@@ -24,7 +24,7 @@ export const RadialChartComponent = ({ scoreData }: RadialChartComponentProps) =
   const svgRef = useRef<HTMLDivElement | null>(null);
   const totalAchievement = 100;
   const inner = [{ name: "Achieved", value: 20 }];
-  const COLORS = ["#FF0101", "rgba(0,0,0,1)"];
+  const COLORS = ["#FF0101", "rgba(0,0,0,0)"];
 
   useEffect(() => {
     if (scoreData.length > 0) {
