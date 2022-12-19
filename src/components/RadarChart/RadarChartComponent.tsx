@@ -32,18 +32,14 @@ export const RadarChartComponent = ({ perfData }: RadarChartProps) => {
   return (
     <div className={style.RadarChart}>
       <ResponsiveContainer height={263} width="99%">
-        <RadarChart
-          margin={{ top: 10, right: 25, left: 25, bottom: 10 }}
-          data={data}
-          style={{ backgroundColor: "#282D30" }}
-        >
+        <RadarChart margin={{ top: 10, right: 50, left: 50, bottom: 10 }} data={data}>
           <PolarGrid radialLines={false} stroke="#fff" />
           <PolarRadiusAxis tickCount={5} stroke={"none"} />
           <PolarAngleAxis
             fontWeight={500}
             fontSize={12}
             tickLine={false}
-            tickSize={13}
+            tickSize={10}
             dataKey="category"
             stroke="#fff"
           />
