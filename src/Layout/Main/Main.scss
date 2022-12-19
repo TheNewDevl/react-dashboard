@@ -2,7 +2,7 @@
 
 .Main {
   padding: mixins.clampCalculator(20px, 80px);
-  @include mixins.media(tablet) {
+  @include mixins.media(desktop) {
     margin-bottom: 77px;
   }
 

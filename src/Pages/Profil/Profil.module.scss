@@ -2,16 +2,19 @@
 
 .content_wrapper {
   margin-top: mixins.clampCalculator(20px, 77px);
-  max-width: 100%;
+  min-width: 100%;
   display: flex;
-  gap: mixins.clampCalculator(10px, 30px);
+  gap: mixins.clampCalculator(20px, 30px);
+  @include mixins.media(small-desktop) {
+    flex-direction: column-reverse;
+  }
 }
 
 .graph_container {
   display: flex;
   width: 100%;
   flex-wrap: wrap;
-  gap: mixins.clampCalculator(10px, 30px);
+  gap: mixins.clampCalculator(20px, 30px);
 
   & .graph_full_width {
     width: 100%;
@@ -23,12 +26,20 @@
   min-width: 75%;
   display: flex;
   gap: mixins.clampCalculator(10px, 30px);
+  @include mixins.media(tablet) {
+    flex-direction: column;
+  }
 }
 
 .key_data_wrapper {
   display: flex;
   flex-direction: column;
-  gap: 39px;
+  gap: mixins.clampCalculator(20px, 40px);
+  @include mixins.media(small-desktop) {
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
 }
 
 /** Created by carlos on 14/12/2022 */
