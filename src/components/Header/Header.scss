@@ -1,18 +1,23 @@
+@use '../../styles/utils/mixins';
+
 header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
   background-color: #020203;
+  z-index: 1000;
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 91px;
-  padding: 18px 28px;
+  padding: mixins.clampCalculator(20px, 18px) mixins.clampCalculator(10px, 30px);
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 
   & .logo-container {
-    min-height: 68px;
-    min-width: 200px;
-    height: 61px;
-    width: 178px;
+    display: flex;
+    align-items: center;
+    width: mixins.clampCalculator(100px, 200px);
 
     & img {
       height: 100%;
@@ -22,18 +27,18 @@ header {
 
   & nav {
     width: 100%;
-    padding-right: 58px;
+    padding-right: mixins.clampCalculator(10px, 60px);
 
     & ul {
       width: 100%;
       display: flex;
       align-items: center;
-      gap: 18%;
+      gap: mixins.clampCalculator(10px, 210px);
       justify-content: flex-end;
 
       & a {
         color: #fff;
-        font-size: 24px;
+        font-size: mixins.clampCalculator(14px, 24px);
         font-weight: 500;
         line-height: 24px;
         letter-spacing: 0;
