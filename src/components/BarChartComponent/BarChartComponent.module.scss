@@ -1,3 +1,5 @@
+@use '../../styles/utils/mixins';
+
 .BarChartComponent {
   position: relative;
 
@@ -16,16 +18,24 @@
     font-weight: 500;
   }
 
-  & [class*="recharts-legend-item"] {
-    margin-left: 30px;
-
-    & span {
-      color: #74798C !important;
-      font-size: 14px;
-      font-weight: 500;
-      margin-left: 10px;
+  & [class*="recharts-legend-wrapper"] {
+    @include mixins.media(tablet) {
+      width: 300px !important;
     }
+
+    & [class*="recharts-legend-item"] {
+      margin-left: 30px;
+
+      & span {
+        color: #74798C !important;
+        font-size: 14px;
+        font-weight: 500;
+        margin-left: 10px;
+      }
+    }
+
   }
+
 
   & .tooltip {
     background-color: #FF0101;
