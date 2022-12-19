@@ -1,4 +1,4 @@
-import { AverageDay, performanceData } from "../types/types";
+import { ActivityData, AverageDay, performanceData, User } from "../types/types";
 
 export const mockSessions: AverageDay[] = [
   { day: 7, sessionLength: 100 },
@@ -11,13 +11,6 @@ export const mockSessions: AverageDay[] = [
   { day: 7, sessionLength: 100 },
 ];
 
-export const mockKeyData = [
-  { Calories: "1,930kCal" },
-  { Protéines: "155g" },
-  { Glucides: "290g" },
-  { Lipides: "50g" },
-];
-
 export const mockPerfData: performanceData[] = [
   { value: 110, category: "Intensité" },
   { value: 220, category: "Vitesse" },
@@ -27,7 +20,7 @@ export const mockPerfData: performanceData[] = [
   { value: 200, category: "Cardio" },
 ];
 
-export const mockSessionsActivity = [
+export const mockSessionsActivity: ActivityData[] = [
   {
     day: 1,
     kilogram: 80,
@@ -85,9 +78,13 @@ export const mockSessionsActivity = [
   },
 ];
 
-export const mockScore = [
-  {
-    name: "score",
-    value: 25,
-  },
-];
+export const mockUserData: User = {
+  dayScore: [{ name: "score", value: 25 }],
+  firstName: "Thomas",
+  keyData: [
+    { Calories: "1,930kCal" },
+    { Protéines: "155g" },
+    { Glucides: "290g" },
+    { Lipides: "50g" },
+  ],
+};
