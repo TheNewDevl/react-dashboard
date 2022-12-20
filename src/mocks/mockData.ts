@@ -80,7 +80,7 @@ export const mockSessionsActivity: ActivityData[] = [
 
 export const mockUserData: User = {
   dayScore: [{ name: "score", value: 25 }],
-  firstName: "Thomas",
+  firstName: "(Données de démo)",
   keyData: [
     { Calories: "1,930kCal" },
     { Protéines: "155g" },

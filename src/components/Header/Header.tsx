@@ -1,4 +1,5 @@
 import "./Header.scss";
+import { Link } from "react-router-dom";
 
 /**
  * @return {JSX.Element}
@@ -13,7 +14,7 @@ const Header = () => {
       <nav>
         <ul>
           <li>
-            <a href="#">Accueil</a>
+            <Link to={"/"}>Accueil</Link>
           </li>
           <li>
             <a href="#">Profil</a>

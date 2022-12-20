@@ -1,0 +1,77 @@
+@use '../../styles/utils/mixins';
+
+.IdSelector {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  max-width: 800px;
+
+  label {
+    display: block;
+    font-size: mixins.clampCalculator(32px, 48px);
+    font-weight: 500;
+    line-height: mixins.clampCalculator(42px, 48px);
+
+    & .red {
+      color: #FF0101;
+    }
+
+    & .small {
+      font-size: mixins.clampCalculator(24px, 32px);
+
+    }
+  }
+
+  input {
+    font-size: mixins.clampCalculator(14px, 18px);
+    font-weight: 400;
+    height: 40px;
+    border-radius: 5px;
+    border: 2px solid #282D30;
+    display: block;
+    width: 100%;
+    margin: 20px 0;
+  }
+
+  .error {
+    color: red;
+    display: none;
+  }
+
+  .buttonsContainer {
+    display: flex;
+    margin-bottom: 20px;
+    gap: 20px;
+  }
+
+  button {
+    width: 100%;
+    border-radius: 5px;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    text-align: center;
+    color: #fff;
+    cursor: pointer;
+    background-color: #FF0101;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+      background-color: #f86e6e;
+    }
+  }
+
+  button:nth-child(2) {
+    background-color: #282D30;
+
+    &:hover {
+      background-color: #5a6670;
+    }
+  }
+}
+
+/** Created by carlos on 20/12/2022 */
