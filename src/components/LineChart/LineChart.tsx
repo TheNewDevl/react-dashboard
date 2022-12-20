@@ -2,7 +2,6 @@ import style from "./LineChart.module.scss";
 import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import {
-  CartesianGrid,
   Legend,
   LegendProps,
   Line,
@@ -127,7 +126,6 @@ const LineChartComponent = ({ graphData }: { graphData: AverageDay[] }) => {
               <stop offset="100%" stopColor="#ffffff" stopOpacity={1} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" />
           <YAxis
             width={0}
             tickFormatter={() => ""}
