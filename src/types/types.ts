@@ -10,8 +10,8 @@ export interface performanceData {
 
 export interface ActivityData {
   day: number;
-  kilogram: number;
-  calories: number;
+  "Poids (kg)": number;
+  "Calories brulées (kCal)": number;
 }
 
 export interface UseStoreReturn {
