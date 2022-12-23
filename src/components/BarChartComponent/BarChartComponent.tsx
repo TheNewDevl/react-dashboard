@@ -121,8 +121,8 @@ BarChartComponent.propTypes = {
   activityData: PropTypes.arrayOf(
     PropTypes.shape({
       day: PropTypes.number.isRequired,
-      kilogram: PropTypes.number.isRequired,
-      calories: PropTypes.number.isRequired,
+      "Poids (kg)": PropTypes.number.isRequired,
+      "Calories brulées (kCal)": PropTypes.number.isRequired,
     })
   ).isRequired,
 };

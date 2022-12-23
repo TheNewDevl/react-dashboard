@@ -1,4 +1,4 @@
-import { AverageDay, performanceData, User } from "../types/types";
+import { ActivityData, AverageDay, performanceData, User } from "../types/types";
 
 export class DataModels {
   /**
@@ -93,13 +93,15 @@ export class DataModels {
    * @param {number} data.data[].calories
    * @return {{"Poids (kg)": number, "Calories brulées (kCal)": number, day: string | number}[] | any[]}
    */
-  activity(data: { data: { sessions: { day: string; kilogram: number; calories: number }[] } }) {
+  activity(data: {
+    data: { sessions: { day: string; kilogram: number; calories: number }[] };
+  }): ActivityData[] {
     if (data && data.data && data.data.sessions && data.data.sessions.length > 0) {
       return data.data.sessions.map((v, index) => {
         // Convert the date into the day of the month
         const day = new Date(v.day).getDate();
         return {
-          day: day ? day : v.day ? v.day : index + 1,
+          day: +(day ? day : v.day ? v.day : index + 1),
           "Poids (kg)": v.kilogram ? v.kilogram : 0,
           "Calories brulées (kCal)": v.calories ? v.calories : 0,
         };
