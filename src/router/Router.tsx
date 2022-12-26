@@ -1,12 +1,13 @@
 import { Route, Routes } from "react-router-dom";
 import { Profil } from "../Pages/Profil/Profil";
-import { IdSelector } from "../Pages/IdSelector/IdSelector";
+import ProtectedRoute from "./ProtectedRoutes";
 
 export const AppRouter = () => {
   return (
     <Routes>
-      <Route path="/:id" element={<Profil />} />
-      <Route path="/" element={<IdSelector />} />
+      <Route element={<ProtectedRoute />}>
+        <Route path="/:id" element={<Profil />} />
+      </Route>
     </Routes>
   );
 };
