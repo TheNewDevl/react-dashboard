@@ -18,15 +18,32 @@ export const IdSelector = () => {
     setInputValue(target.value);
   };
 
+  /**
+   * Change the inner text of the error paragraph
+   * @param {string} message - The message to display
+   */
+  const setErrorDisplay = (message: string) => {
+    if (errorRef.current) {
+      errorRef.current.innerText = message;
+    }
+  };
+
+  /**
+   * Handle the click event on the submit buttons
+   * @param {React.MouseEvent} e - The event
+   */
   const handleSubmit = (e: MouseEvent) => {
     e.preventDefault();
     const target = e.target as HTMLButtonElement;
-    if (target.innerText === "Données d'exemple") {
-      navigate("/sample");
-    } else {
-      isValidId(inputValue)
-        ? navigate(`/${inputValue}`)
-        : (errorRef.current!.style.display = "block");
+    setErrorDisplay("");
+    switch (target.value) {
+      case "Données d'exemple":
+        setIdState("sample");
+        break;
+      default:
+        isValidId(inputValue)
+          ? setIdState(inputValue)
+          : setErrorDisplay("L'id doit être un nombre de 1 à 9 chiffres");
     }
   };
 
@@ -48,9 +65,7 @@ export const IdSelector = () => {
           <input type="submit" onClick={handleSubmit} value="Valider" />
           <input type="submit" onClick={handleSubmit} value="Données d'exemple" />
         </div>
-        <p ref={errorRef} className={style.error}>
-          L'identifiant est incorrect.
-        </p>
+        <p ref={errorRef} className={style.error}></p>
       </form>
     </Main>
   );
