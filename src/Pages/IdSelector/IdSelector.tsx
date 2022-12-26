@@ -45,8 +45,8 @@ export const IdSelector = () => {
           />
         </label>
         <div className={style.buttonsContainer}>
-          <button onClick={handleSubmit}>Valider</button>
-          <button onClick={handleSubmit}>Données d'exemple</button>
+          <input type="submit" onClick={handleSubmit} value="Valider" />
+          <input type="submit" onClick={handleSubmit} value="Données d'exemple" />
         </div>
         <p ref={errorRef} className={style.error}>
           L'identifiant est incorrect.
