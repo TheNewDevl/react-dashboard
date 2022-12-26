@@ -9,7 +9,7 @@ import {
 } from "recharts";
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { performanceData } from "../../types/types";
+import { performanceData } from "../../../utils/types/types";
 
 interface RadarChartProps {
   perfData: performanceData[];

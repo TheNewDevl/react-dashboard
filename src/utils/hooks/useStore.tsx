@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import Store from "../api/Api";
+import Store from "../../api/Api";
 import { UseStoreReturn } from "../types/types";
-import MockData from "../mocks/mockData";
+import MockData from "../../mocks/mockData";
 
 export const useStore = (userId: string): Partial<UseStoreReturn> => {
   const [datas, setDatas] = useState<Partial<UseStoreReturn>>({} as UseStoreReturn);

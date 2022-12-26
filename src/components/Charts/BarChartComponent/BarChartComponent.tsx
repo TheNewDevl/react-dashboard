@@ -12,7 +12,7 @@ import {
 } from "recharts";
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { ActivityData } from "../../types/types";
+import { ActivityData } from "../../../utils/types/types";
 
 interface BarChartComponentProps {
   activityData: ActivityData[];

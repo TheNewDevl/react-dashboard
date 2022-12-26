@@ -1,5 +1,5 @@
 import { DataModels } from "../model/DataModels";
-import { ActivityData, AverageDay, performanceData, User } from "../types/types";
+import { ActivityData, AverageDay, performanceData, User } from "../utils/types/types";
 
 /**
  * @description This class is used to fetch data from a REST API

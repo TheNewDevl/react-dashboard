@@ -1,13 +1,13 @@
 import style from "./Profil.module.scss";
 import Main from "../../Layout/Main/Main";
-import LineChartComponent from "../../components/LineChart/LineChart";
+import LineChartComponent from "../../components/Charts/LineChart/LineChart";
 import { useParams } from "react-router-dom";
 import { KeyDataCard } from "../../components/KeyDataCard/KeyDataCard";
-import { RadarChartComponent } from "../../components/RadarChart/RadarChartComponent";
-import { BarChartComponent } from "../../components/BarChartComponent/BarChartComponent";
-import { RadialChartComponent } from "../../components/RadialChartComponent/RadialChartComponent";
+import { RadarChartComponent } from "../../components/Charts/RadarChart/RadarChartComponent";
+import { BarChartComponent } from "../../components/Charts/BarChartComponent/BarChartComponent";
+import { RadialChartComponent } from "../../components/Charts/RadialChartComponent/RadialChartComponent";
 import { useEffect } from "react";
-import { useStore } from "../../hooks/useStore";
+import { useStore } from "../../utils/hooks/useStore";
 
 interface ProfilProps {}
 

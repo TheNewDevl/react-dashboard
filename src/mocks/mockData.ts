@@ -1,4 +1,4 @@
-import { ActivityData, AverageDay, performanceData, User } from "../types/types";
+import { ActivityData, AverageDay, performanceData, User } from "../utils/types/types";
 
 class MockData {
   averageSessions(id: string): AverageDay[] {

@@ -12,7 +12,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { AverageDay } from "../../types/types";
+import { AverageDay } from "../../../utils/types/types";
 
 /**
  * @param {Object[]} graphData - The data to display on the graph
