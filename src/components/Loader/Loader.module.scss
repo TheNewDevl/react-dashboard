@@ -1,0 +1,25 @@
+.Loader {
+  margin: auto;
+  padding: 10px;
+  border: 4px solid #FF0000;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  animation: rotate 1s infinite linear;
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+@keyframes rotate {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/** Created by carlos on 26/12/2022 */
