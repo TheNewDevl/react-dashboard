@@ -19,6 +19,8 @@ export interface UseStoreReturn {
   perfData: performanceData[];
   activityData: ActivityData[];
   user: User;
+  error: string | null;
+  isLoading: boolean;
 }
 
 export interface DayScore {
@@ -31,7 +33,16 @@ export interface KeyData {
 }
 
 export interface User {
+  id?: string;
   firstName: string;
   dayScore: DayScore[];
   keyData: KeyData[];
+}
+
+export enum StoreActionsEnum {
+  ALL,
+  AVERAGE,
+  PERFORMANCE,
+  ACTIVITY,
+  USER,
 }
