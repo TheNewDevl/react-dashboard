@@ -1,18 +1,14 @@
 import Header from "./components/Header/Header";
 import VerticalLayout from "./components/VerticalLayout/VerticalLayput";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Profil } from "./Pages/Profil/Profil";
-import { IdSelector } from "./Pages/IdSelector/IdSelector";
+import { BrowserRouter } from "react-router-dom";
+import { AppRouter } from "./router/Router";
 
 function App() {
   return (
     <BrowserRouter>
       <Header />
       <VerticalLayout />
-      <Routes>
-        <Route path="/:id" element={<Profil />} />
-        <Route path="/" element={<IdSelector />} />
-      </Routes>
+      <AppRouter />
     </BrowserRouter>
   );
 }
