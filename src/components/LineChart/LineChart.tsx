@@ -37,7 +37,7 @@ const LineChartComponent = ({ graphData }: { graphData: AverageDay[] }) => {
   const handleMarginLeft = () => {
     if (chartRef?.current?.offsetWidth) {
       const width = chartRef.current.offsetWidth;
-      setMargin({ ...margin, left: -width / 7 + 10 });
+      setMargin({ ...margin, left: -width / 7 + 10, right: -width / 7 + 20 });
     }
   };
 
@@ -107,7 +107,7 @@ const LineChartComponent = ({ graphData }: { graphData: AverageDay[] }) => {
     let spacing = chartRef.current
       ? ((chartRef.current.clientWidth - p * 2) / 6) * (payload.index - 1) + p
       : x;
-    return payload.index === 0 ? null : (
+    return payload.index % 8 === 0 ? null : (
       <g transform={`translate(${spacing},${y})`}>
         <text className={style.axis} x={0} y={0} textAnchor="middle" fill="#666">
           {payload.value}
@@ -131,7 +131,10 @@ const LineChartComponent = ({ graphData }: { graphData: AverageDay[] }) => {
             tickFormatter={() => ""}
             tickSize={0}
             axisLine={false}
-            domain={[0, Math.max(...data.map((d) => d.sessionLength))]}
+            domain={[
+              Math.floor(Math.min(...data.map((d) => d.sessionLength))),
+              Math.ceil(Math.max(...data.map((d) => d.sessionLength))),
+            ]}
           />
           <XAxis
             tickMargin={30}

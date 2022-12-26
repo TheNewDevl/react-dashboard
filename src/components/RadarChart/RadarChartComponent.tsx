@@ -39,6 +39,7 @@ export const RadarChartComponent = ({ perfData }: RadarChartProps) => {
             fontWeight={500}
             fontSize={12}
             tickLine={false}
+            axisLine={false}
             tickSize={10}
             dataKey="category"
             stroke="#fff"

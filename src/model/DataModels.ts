@@ -34,6 +34,7 @@ export class DataModels {
           sessionLength: l && l >= 0 && l < 500 ? l : 0,
         });
       }
+      activityData.push({ day: mapDays[1], sessionLength: sessions[0]?.sessionLength || 0 });
       return activityData;
     } else {
       return [];

@@ -11,6 +11,7 @@ class MockData {
       { day: "V", sessionLength: 0 },
       { day: "S", sessionLength: 100 },
       { day: "D", sessionLength: 100 },
+      { day: "L", sessionLength: 50 },
     ];
   }
 
