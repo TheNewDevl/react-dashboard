@@ -60,7 +60,7 @@ class Store {
   private dataModels: DataModels;
 
   constructor() {
-    this._api = new Api("http://localhost:3000/");
+    this._api = new Api("http://localhost:3000");
     this.dataModels = new DataModels();
   }
 
@@ -99,7 +99,9 @@ class Store {
    * @return {Promise<User>} - User first name, data for radial chart and key data
    */
   async user(userId: string): Promise<User> {
-    return await this._api.get(`/user/${userId}`, new Headers()).then((data) => this.dataModels.user(data));
+    return await this._api
+      .get(`/user/${userId}`, new Headers())
+      .then((data) => this.dataModels.user(data));
   }
 }
 
