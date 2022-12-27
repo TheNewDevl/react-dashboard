@@ -14,7 +14,7 @@ import { useStore } from "../../utils/hooks/useStore";
 const isValidId = (value: string | undefined) => {
   if (value) {
     const v = value.trim();
-    return v.length > 0 && v.length < 10 && !isNaN(Number(v));
+    return value === "sample" || v.length > 0 && v.length < 10 && !isNaN(Number(v));
   }
   return false;
 };
