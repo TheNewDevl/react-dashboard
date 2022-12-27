@@ -12,7 +12,10 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { AverageDay } from "../../../utils/types/types";
+import { AverageDay, StoreActionsEnum } from "../../../utils/types/types";
+import { useUserContext } from "../../../utils/context/Context";
+import { useStore } from "../../../utils/hooks/useStore";
+import { Loader } from "../../Loader/Loader";
 
 /**
  * @param {Object[]} graphData - The data to display on the graph
@@ -23,11 +26,22 @@ import { AverageDay } from "../../../utils/types/types";
  * <LineChartComponent graphData={data} />
  */
 
-const LineChartComponent = ({ graphData }: { graphData: AverageDay[] }) => {
+const LineChartComponent = ({ graphData }: { graphData?: AverageDay[] }) => {
+  const { user } = useUserContext();
   const [data, setData] = useState<AverageDay[]>([]);
-  useEffect(() => {
-    setData(graphData);
-  }, []);
+  const [userId, setUserId] = useState<string | undefined>(undefined);
+
+  //If perfData is provided as a prop, use that data
+  graphData && useEffect(() => graphData && setData(graphData), [graphData]);
+
+  //If perfData is not provided as a prop, fetch data from the store
+  const { averageSessions, isLoading, error } = useStore(userId as string, StoreActionsEnum.AVERAGE);
+  if (!graphData) {
+    useEffect(() => {
+      user && setUserId(user.id || "");
+      averageSessions && setData(averageSessions);
+    }, [user, averageSessions]);
+  }
 
   const chartRef = useRef<HTMLDivElement | null>(null);
   const [margin, setMargin] = useState({ top: 70, right: 0, left: 0, bottom: 30 });
@@ -84,10 +98,7 @@ const LineChartComponent = ({ graphData }: { graphData: AverageDay[] }) => {
    */
   const CustomLegend = ({ payload, margin }: LegendProps) => {
     return payload && payload.length ? (
-      <p
-        style={{ left: `${margin?.left ? 35 - margin.left : 35}px` }}
-        className={style.custom_legend}
-      >
+      <p style={{ left: `${margin?.left ? 35 - margin.left : 35}px` }} className={style.custom_legend}>
         {payload[0].value}
       </p>
     ) : null;
@@ -104,9 +115,7 @@ const LineChartComponent = ({ graphData }: { graphData: AverageDay[] }) => {
    */
   const CustomizedAxisTick = ({ x, y, payload }: any) => {
     const p = 20;
-    let spacing = chartRef.current
-      ? ((chartRef.current.clientWidth - p * 2) / 6) * (payload.index - 1) + p
-      : x;
+    let spacing = chartRef.current ? ((chartRef.current.clientWidth - p * 2) / 6) * (payload.index - 1) + p : x;
     return payload.index % 8 === 0 ? null : (
       <g transform={`translate(${spacing},${y})`}>
         <text className={style.axis} x={0} y={0} textAnchor="middle" fill="#666">
@@ -118,57 +127,54 @@ const LineChartComponent = ({ graphData }: { graphData: AverageDay[] }) => {
 
   return (
     <div ref={chartRef} className={style.LineChart}>
-      <ResponsiveContainer height={height} width="99%">
-        <LineChart height={height} data={data} margin={margin}>
-          <defs>
-            <linearGradient id="lineGradient">
-              <stop offset="40%" stopColor="#ffffff" stopOpacity={0.4} />
-              <stop offset="100%" stopColor="#ffffff" stopOpacity={1} />
-            </linearGradient>
-          </defs>
-          <YAxis
-            width={0}
-            tickFormatter={() => ""}
-            tickSize={0}
-            axisLine={false}
-            domain={[
-              Math.floor(Math.min(...data.map((d) => d.sessionLength))),
-              Math.ceil(Math.max(...data.map((d) => d.sessionLength))),
-            ]}
-          />
-          <XAxis
-            tickMargin={30}
-            axisLine={false}
-            tickSize={0}
-            dataKey="day"
-            tick={<CustomizedAxisTick />}
-          />
-          <Tooltip
-            cursor={false}
-            wrapperStyle={{ outline: "none" }}
-            content={<CustomTooltip />}
-            separator=""
-          />
-          <Line
-            type="monotone"
-            dataKey="sessionLength"
-            stroke="url(#lineGradient)"
-            strokeWidth={2}
-            dot={false}
-            activeDot={{
-              r: 4,
-              fill: "#ffffff",
-              stroke: "rgba(255, 255, 255, 0.2)",
-              strokeWidth: 10,
-            }}
-          />
-          <Legend
-            verticalAlign={"top"}
-            content={<CustomLegend />}
-            payload={[{ value: "Durée moyenne des sessions" }]}
-          />
-        </LineChart>
-      </ResponsiveContainer>
+      {isLoading ? (
+        <Loader />
+      ) : error ? (
+        <p>{error}</p>
+      ) : (
+        data?.length > 0 && (
+          <ResponsiveContainer className={style.test} height={height} width="99%">
+            <LineChart height={height} data={data} margin={margin}>
+              <defs>
+                <linearGradient id="lineGradient">
+                  <stop offset="40%" stopColor="#ffffff" stopOpacity={0.4} />
+                  <stop offset="100%" stopColor="#ffffff" stopOpacity={1} />
+                </linearGradient>
+              </defs>
+              <YAxis
+                width={0}
+                tickFormatter={() => ""}
+                tickSize={0}
+                axisLine={false}
+                domain={[
+                  Math.floor(Math.min(...data.map((d) => d.sessionLength))),
+                  Math.ceil(Math.max(...data.map((d) => d.sessionLength))),
+                ]}
+              />
+              <XAxis tickMargin={30} axisLine={false} tickSize={0} dataKey="day" tick={<CustomizedAxisTick />} />
+              <Tooltip cursor={false} wrapperStyle={{ outline: "none" }} content={<CustomTooltip />} separator="" />
+              <Line
+                type="monotone"
+                dataKey="sessionLength"
+                stroke="url(#lineGradient)"
+                strokeWidth={2}
+                dot={false}
+                activeDot={{
+                  r: 4,
+                  fill: "#ffffff",
+                  stroke: "rgba(255, 255, 255, 0.2)",
+                  strokeWidth: 10,
+                }}
+              />
+              <Legend
+                verticalAlign={"top"}
+                content={<CustomLegend />}
+                payload={[{ value: "Durée moyenne des sessions" }]}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        )
+      )}
     </div>
   );
 };
@@ -179,7 +185,7 @@ LineChartComponent.propTypes = {
       day: PropTypes.string.isRequired,
       sessionLength: PropTypes.number.isRequired,
     })
-  ).isRequired,
+  ),
 };
 
 export default LineChartComponent;

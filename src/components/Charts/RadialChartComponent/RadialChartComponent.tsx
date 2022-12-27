@@ -1,6 +1,7 @@
 import style from "./RadialChartComponent.module.scss";
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer } from "recharts";
 import { useEffect, useRef, useState } from "react";
+import { useUserContext } from "../../../utils/context/Context";
 
 interface ScoreData {
   name: string;
@@ -8,7 +9,7 @@ interface ScoreData {
 }
 
 interface RadialChartComponentProps {
-  scoreData: ScoreData[];
+  scoreData?: ScoreData[];
 }
 
 /**
@@ -26,12 +27,21 @@ export const RadialChartComponent = ({ scoreData }: RadialChartComponentProps) =
   const inner = [{ name: "Achieved", value: 20 }];
   const COLORS = ["#FF0101", "rgba(0,0,0,0)"];
 
+  /*
+    useEffect(() => {
+      if (scoreData.length > 0) {
+        const remaining = { name: "remaining", value: totalAchievement - scoreData[0].value };
+        setData([...scoreData, remaining]);
+      }
+    }, [scoreData]);
+  */
+  const { user } = useUserContext();
+
   useEffect(() => {
-    if (scoreData.length > 0) {
-      const remaining = { name: "remaining", value: totalAchievement - scoreData[0].value };
-      setData([...scoreData, remaining]);
+    if (user && user.dayScore?.length > 0) {
+      setData([...user.dayScore, { name: "remaining", value: totalAchievement - user.dayScore[0].value }]);
     }
-  }, [scoreData]);
+  }, [user]);
 
   const Legend = () => {
     if (data && data.length > 0 && data[0].value) {
@@ -67,14 +77,7 @@ export const RadialChartComponent = ({ scoreData }: RadialChartComponentProps) =
             ))}
           </Pie>
 
-          <Pie
-            blendStroke
-            data={inner}
-            innerRadius={0}
-            outerRadius={75}
-            dataKey="value"
-            fill={"#fff"}
-          />
+          <Pie blendStroke data={inner} innerRadius={0} outerRadius={75} dataKey="value" fill={"#fff"} />
         </PieChart>
       </ResponsiveContainer>
     </div>

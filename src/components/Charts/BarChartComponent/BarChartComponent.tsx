@@ -12,10 +12,13 @@ import {
 } from "recharts";
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { ActivityData } from "../../../utils/types/types";
+import { ActivityData, StoreActionsEnum } from "../../../utils/types/types";
+import { useStore } from "../../../utils/hooks/useStore";
+import { useUserContext } from "../../../utils/context/Context";
+import { Loader } from "../../Loader/Loader";
 
 interface BarChartComponentProps {
-  activityData: ActivityData[];
+  activityData?: ActivityData[];
 }
 
 /**
@@ -28,12 +31,22 @@ interface BarChartComponentProps {
  */
 export const BarChartComponent = ({ activityData }: BarChartComponentProps) => {
   const [data, setData] = useState<ActivityData[]>([]);
+  const [userId, setUserId] = useState<string | undefined>(undefined);
   const margin = { top: 24, right: 30, left: 40, bottom: 24 };
   const ticksStyle = { fontSize: "14px", fontWeight: 500, fill: "#9B9EAC" };
 
-  useEffect(() => {
-    setData(activityData);
-  }, []);
+  //If perfData is provided as a prop, use that data
+  activityData && useEffect(() => activityData && setData(activityData), [activityData]);
+  const { activityData: aData, isLoading, error } = useStore(userId as string, StoreActionsEnum.ACTIVITY);
+
+  //If perfData is not provided as a prop, fetch data from the store
+  const { user } = useUserContext();
+  if (!activityData) {
+    useEffect(() => {
+      user && setUserId(user.id || "");
+      aData && setData(aData);
+    }, [user, aData]);
+  }
 
   /**
    * Custom Recharts Tooltip, display the exact value of the point in a div with a custom style
@@ -57,62 +70,64 @@ export const BarChartComponent = ({ activityData }: BarChartComponentProps) => {
   };
   return (
     <div className={style.BarChartComponent}>
-      <p className={style.name}>Activité quotidienne</p>
-      <ResponsiveContainer width="99%" height={320}>
-        <BarChart barSize={7} data={data} margin={margin} barGap={8}>
-          <CartesianGrid vertical={false} strokeDasharray="2 1" />
-          <XAxis
-            minTickGap={0}
-            tickSize={0}
-            tick={ticksStyle}
-            tickMargin={16}
-            dataKey="day"
-            axisLine={{ stroke: "#DEDEDE" }}
-          />
-          <YAxis tickCount={3} width={0} yAxisId="left" orientation="left" />
-          <YAxis
-            domain={["dataMin -10", "dataMax + 5"]}
-            tickCount={3}
-            tickMargin={30}
-            tick={ticksStyle}
-            tickLine={false}
-            axisLine={false}
-            orientation="right"
-            yAxisId="right"
-          />
+      {isLoading ? (
+        <Loader />
+      ) : error ? (
+        <p>{error}</p>
+      ) : (
+        data?.length > 0 && (
+          <>
+            <p className={style.name}>Activité quotidienne</p>
+            <ResponsiveContainer width="99%" height={320}>
+              <BarChart barSize={7} data={data} margin={margin} barGap={8}>
+                <CartesianGrid vertical={false} strokeDasharray="2 1" />
+                <XAxis
+                  minTickGap={0}
+                  tickSize={0}
+                  tick={ticksStyle}
+                  tickMargin={16}
+                  dataKey="day"
+                  axisLine={{ stroke: "#DEDEDE" }}
+                />
+                <YAxis tickCount={3} width={0} yAxisId="left" orientation="left" />
+                <YAxis
+                  domain={["dataMin -10", "dataMax + 5"]}
+                  tickCount={3}
+                  tickMargin={30}
+                  tick={ticksStyle}
+                  tickLine={false}
+                  axisLine={false}
+                  orientation="right"
+                  yAxisId="right"
+                />
 
-          <Tooltip wrapperStyle={{ outline: "none" }} content={<CustomTooltip />} />
-          <Legend
-            iconType="circle"
-            iconSize={8}
-            wrapperStyle={ticksStyle}
-            height={80}
-            verticalAlign="top"
-            align="right"
-          />
+                <Tooltip wrapperStyle={{ outline: "none" }} content={<CustomTooltip />} />
+                <Legend
+                  iconType="circle"
+                  iconSize={8}
+                  wrapperStyle={ticksStyle}
+                  height={80}
+                  verticalAlign="top"
+                  align="right"
+                />
 
-          <Bar
-            radius={[3, 3, 0, 0]}
-            yAxisId="right"
-            dataKey={
-              activityData[0] && Object.keys(activityData[0]).length >= 3
-                ? Object.keys(activityData[0])[1]
-                : ""
-            }
-            fill="#282D30"
-          />
-          <Bar
-            radius={[3, 3, 0, 0]}
-            yAxisId="left"
-            dataKey={
-              activityData[0] && Object.keys(activityData[0]).length >= 3
-                ? Object.keys(activityData[0])[2]
-                : ""
-            }
-            fill="#E60000"
-          />
-        </BarChart>
-      </ResponsiveContainer>
+                <Bar
+                  radius={[3, 3, 0, 0]}
+                  yAxisId="right"
+                  dataKey={data[0] && Object.keys(data[0]).length >= 3 ? Object.keys(data[0])[1] : ""}
+                  fill="#282D30"
+                />
+                <Bar
+                  radius={[3, 3, 0, 0]}
+                  yAxisId="left"
+                  dataKey={data[0] && Object.keys(data[0]).length >= 3 ? Object.keys(data[0])[2] : ""}
+                  fill="#E60000"
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </>
+        )
+      )}
     </div>
   );
 };
@@ -124,6 +139,6 @@ BarChartComponent.propTypes = {
       "Poids (kg)": PropTypes.number.isRequired,
       "Calories brulées (kCal)": PropTypes.number.isRequired,
     })
-  ).isRequired,
+  ),
 };
 /** Created by carlos on 16/12/2022 */

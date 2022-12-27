@@ -14,10 +14,10 @@ interface ProfilProps {}
 
 export const Profil = ({}: ProfilProps) => {
   //Retrieve user context
-  const { user: userData } = useUserContext();
+  const { user } = useUserContext();
   //Use store to fetch data
-  const { error, isLoading, ...data } = useStore(userData?.id as string, StoreActionsEnum.ALL);
-  const { user, perfData, averageSessions, activityData } = data;
+  const { error, isLoading, ...data } = useStore(user?.id as string, StoreActionsEnum.ALL);
+  const { perfData, averageSessions, activityData } = data;
 
   const Graphs = () => {
     if (error) {
