@@ -1,25 +1,30 @@
 import "./VerticalLayout.scss";
 import Tag from "../Tag/Tag";
+import { useUserContext } from "../../utils/context/Context";
 
 /**
  * @type {{alt: string, icon: string}[]}
  */
-const Tags: { alt: string; icon: string }[] = [
+const Tags: { alt: string; icon: string; link: string }[] = [
   {
     alt: "Meditation",
-    icon: "./meditation.svg",
+    icon: "/meditation.svg",
+    link: "performance",
   },
   {
     alt: "Swimming",
-    icon: "./swimming.svg",
+    icon: "/swimming.svg",
+    link: "activity",
   },
   {
     alt: "Cycle",
-    icon: "./cycle.svg",
+    icon: "/cycle.svg",
+    link: "average",
   },
   {
     alt: "Musculation",
-    icon: "./musculation.svg",
+    icon: "/musculation.svg",
+    link: "score",
   },
 ];
 
@@ -28,14 +33,15 @@ const Tags: { alt: string; icon: string }[] = [
  * @constructor
  */
 const VerticalLayout = () => {
+  const { user } = useUserContext();
   return (
     <div className="VerticalLayout">
       <div className="VerticalLayout__tags__container">
-        {Tags.map(({ alt, icon }, index) => (
-          <Tag key={index} alt={alt} icon={icon} />
+        {Tags.map(({ alt, icon, link }, index) => (
+          <Tag link={`/${user?.id}/${link}`} key={index} alt={alt} icon={icon} />
         ))}
       </div>
-      <p className="VerticalLayout__copy">Copiryght, SportSee 2020</p>
+      <p className="VerticalLayout__copy">Copyright, SportSee 2020</p>
     </div>
   );
 };
