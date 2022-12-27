@@ -13,29 +13,22 @@ export class DataModels {
    * const averageSessions = this.dataModels.averageSessions(data);
    */
   averageSessions(data: any): AverageDay[] {
-    if (data && data.data && data.data?.sessions && data.data.sessions.length > 0) {
-      const mapDays: { [key: number]: string } = {
-        1: "L",
-        2: "M",
-        3: "M",
-        4: "J",
-        5: "V",
-        6: "S",
-        7: "D",
-      };
+    if (data?.data?.sessions?.length > 0) {
+      const mapDays: { [key: number]: string } = {1: "L", 2: "M", 3: "M", 4: "J", 5: "V", 6: "S", 7: "D"};
       let sessions: AverageDay[] = data.data.sessions;
-      let activityData = [{ day: mapDays[7], sessionLength: sessions[6]?.sessionLength || 0 }];
 
-      for (let i = 0; i < 7; i++) {
-        const l = sessions[i]?.sessionLength;
-        const day = sessions[i]?.day;
-        activityData.push({
-          day: (day && day > 0) || day < 8 ? mapDays[day as number] : mapDays[i + 1],
-          sessionLength: l && l >= 0 && l < 500 ? l : 0,
-        });
-      }
-      activityData.push({ day: mapDays[1], sessionLength: sessions[0]?.sessionLength || 0 });
-      return activityData;
+      //Return an array whose first element will be the last day of the week and the last element the first day to allow the line to join the values
+      return Array.from({length: 9}, (v, i) => {
+        const l = sessions[i-1]?.sessionLength;
+        const day = sessions[i-1]?.day;
+        return i === 0 ? { day: mapDays[7], sessionLength: sessions[6]?.sessionLength || 0 }// Last day of the week
+            :  i === 8 ? { day: mapDays[1], sessionLength: sessions[0]?.sessionLength || 0 }/// First day of the week
+            // Other days (in the middle) L-M-M-J-V-S-D
+            : {
+                day: (day && day > 0) || day < 8 ? mapDays[day as number] : mapDays[i - 1],
+                sessionLength: l && l >= 0 && l < 500 ? l : 0
+              };
+      });
     } else {
       return [];
     }
@@ -54,30 +47,21 @@ export class DataModels {
   performance(data: {
     data: { data: { value: number; kind: number }[]; kind: { [key: number]: string } };
   }): performanceData[] {
-    if (
-      data &&
-      data.data &&
-      data.data.hasOwnProperty("kind") &&
-      data.data.hasOwnProperty("data") &&
-      data.data.data.length > 0
-    ) {
-      // Format the catégories
-      for (let [key, value] of Object.entries(data.data.kind)) {
-        data.data.kind[+key] = value
-          .replace(/cardio/i, "Cardio")
-          .replace(/speed/i, "Vitesse")
-          .replace(/endurance/i, "Endurance")
-          .replace(/energy/i, "Énergie")
-          .replace(/intensity/i, "Intensité")
-          .replace(/strength/i, "Force");
-      }
+    if ( data?.data?.kind && data?.data?.data?.length > 0 ) {
+      // Format the catégories to display
+      Object.entries(data.data.kind).map(v => {
+        if (/cardio/i.test(v[1])) data.data.kind[+v[0]] = "Cardio"
+        else if (/speed/i.test(v[1])) data.data.kind[+v[0]] = "Vitesse"
+        else if (/endurance/i.test(v[1])) data.data.kind[+v[0]] = "Endurance";
+        else if (/energy/i.test(v[1])) data.data.kind[+v[0]] = "Énergie";
+        else if (/intensity/i.test(v[1])) data.data.kind[+v[0]] = "Intensité";
+        else if (/strength/i.test(v[1])) data.data.kind[+v[0]] = "Force";
+      });
+
       // Format the data
       return data.data.data.map((v, i: number) => ({
-        value: v.hasOwnProperty("value") ? v.value : 0,
-        category:
-          v.hasOwnProperty("kind") && data.data.kind[v.kind]
-            ? data.data.kind[v.kind]
-            : `Catégorie ${i + 1}`,
+        value: v.value ?? 0,
+        category: v.kind && data.data.kind[v.kind] || `Catégorie ${i + 1}`,
       }));
     } else {
       return [];
@@ -94,17 +78,15 @@ export class DataModels {
    * @param {number} data.data[].calories
    * @return {{"Poids (kg)": number, "Calories brulées (kCal)": number, day: string | number}[] | any[]}
    */
-  activity(data: {
-    data: { sessions: { day: string; kilogram: number; calories: number }[] };
-  }): ActivityData[] {
-    if (data && data.data && data.data.sessions && data.data.sessions.length > 0) {
-      return data.data.sessions.map((v, index) => {
+  activity(data: { data: { sessions: { day: string; kilogram: number; calories: number }[] } }): ActivityData[] {
+    if (data?.data?.sessions?.length > 0) {
+      return data.data.sessions.map((v, i) => {
         // Convert the date into the day of the month
         const day = new Date(v.day).getDate();
         return {
-          day: +(day ? day : v.day ? v.day : index + 1),
-          "Poids (kg)": v.kilogram ? v.kilogram : 0,
-          "Calories brulées (kCal)": v.calories ? v.calories : 0,
+          day: +(day ?? v.day ?? i + 1),
+          "Poids (kg)": v.kilogram ?? 0,
+          "Calories brulées (kCal)": v.calories ?? 0,
         };
       });
     } else {
@@ -121,36 +103,28 @@ export class DataModels {
    */
   user(data: any): User {
     const user: User = { dayScore: [], firstName: "", keyData: [] };
-    if (data && data.data) {
+    if (data?.data) {
       //firstName
-      if (
-        data.data.hasOwnProperty("userInfos") &&
-        data.data.userInfos.hasOwnProperty("firstName")
-      ) {
+      if (data.data.hasOwnProperty("userInfos") && data.data.userInfos.hasOwnProperty("firstName")) {
         user.firstName = data.data.userInfos.firstName;
       }
 
       //dayScore
-      const scoreKeyFilter = Object.keys(data.data).filter((key) => /score/i.test(key));
-      if (scoreKeyFilter.length > 0) {
-        user.dayScore.push({
-          name: "Score",
-          value: data.data[scoreKeyFilter[0]] * 100,
-        });
-      }
+      user.dayScore.push({
+        name: "Score",
+        value: data.data.todayScore ?? data.data.score ?? 0,
+      });
+
       //keyData
       if (data.data.hasOwnProperty("keyData")) {
         for (let [key, value] of Object.entries(data.data.keyData as { [key: string]: number })) {
           if (/calor/i.test(key)) {
             user.keyData.push({ Calories: `${(value / 1000).toFixed(3).replace(".", ",")}kCal` });
-          }
-          if (/prote/i.test(key)) {
+          } else if (/prote/i.test(key)) {
             user.keyData.push({ Protéines: `${value}g` });
-          }
-          if (/carbo/i.test(key)) {
+          } else if (/carbo/i.test(key)) {
             user.keyData.push({ Glucides: `${value}g` });
-          }
-          if (/lipid/i.test(key)) {
+          } else if (/lipid/i.test(key)) {
             user.keyData.push({ Lipides: `${value}g` });
           }
         }
