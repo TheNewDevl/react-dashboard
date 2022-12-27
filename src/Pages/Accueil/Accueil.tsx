@@ -13,7 +13,7 @@ export const Accueil = ({}: AccueilProps) => {
     <Main>
       <h1>Accueil</h1>
       <p>{user?.firstName}, cette page est en cours de construction.</p>
-      <Button onClick={() => navigate(`/${user?.id}`)} text="Profil" />
+      <Button onClick={() => navigate(`/user/${user?.id}`)} text="Profil" />
     </Main>
   );
 };

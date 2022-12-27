@@ -38,7 +38,7 @@ const VerticalLayout = () => {
     <div className="VerticalLayout">
       <div className="VerticalLayout__tags__container">
         {Tags.map(({ alt, icon, link }, index) => (
-          <Tag link={`/${user?.id}/${link}`} key={index} alt={alt} icon={icon} />
+          <Tag link={`/user/${user?.id}/${link}`} key={index} alt={alt} icon={icon} />
         ))}
       </div>
       <p className="VerticalLayout__copy">Copyright, SportSee 2020</p>

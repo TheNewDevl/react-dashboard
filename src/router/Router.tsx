@@ -13,12 +13,12 @@ export const AppRouter = () => {
   return (
     <Routes>
       <Route element={<ProtectedRoute />}>
+        <Route path="/user/:id/performance" element={<Main children={<RadarChartComponent />} />} />
+        <Route path="/user/:id/activity" element={<Main children={<BarChartComponent />} />} />
+        <Route path="/user/:id/average" element={<Main children={<LineChartComponent />} />} />
+        <Route path="/user/:id/score" element={<Main children={<RadialChartComponent />} />} />
+        <Route path="/user/:id" element={<Profil />} />
         <Route path="/" element={<Accueil />} />
-        <Route path="/:id" element={<Profil />} />
-        <Route path="/:id/performance" element={<Main children={<RadarChartComponent />} />} />
-        <Route path="/:id/activity" element={<Main children={<BarChartComponent />} />} />
-        <Route path="/:id/average" element={<Main children={<LineChartComponent />} />} />
-        <Route path="/:id/score" element={<Main children={<RadialChartComponent />} />} />
       </Route>
       <Route path="*" element={<Error />} />
     </Routes>

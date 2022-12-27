@@ -60,7 +60,7 @@ class Store {
   private dataModels: DataModels;
 
   constructor() {
-    this._api = new Api("http://localhost:3000/user/");
+    this._api = new Api("http://localhost:3000/");
     this.dataModels = new DataModels();
   }
 
@@ -70,7 +70,7 @@ class Store {
    */
   async averageSessions(userId: string | null): Promise<AverageDay[]> {
     return await this._api
-      .get(`${userId}/average-sessions`, new Headers())
+      .get(`/user/${userId}/average-sessions`, new Headers())
       .then((data) => this.dataModels.averageSessions(data));
   }
 
@@ -80,7 +80,7 @@ class Store {
    */
   async performance(userId: string): Promise<performanceData[]> {
     return await this._api
-      .get(`${userId}/performance`, new Headers())
+      .get(`/user/${userId}/performance`, new Headers())
       .then((data) => this.dataModels.performance(data));
   }
 
@@ -90,7 +90,7 @@ class Store {
    */
   async activity(userId: string): Promise<ActivityData[]> {
     return await this._api
-      .get(`${userId}/activity`, new Headers())
+      .get(`/user/${userId}/activity`, new Headers())
       .then((data) => this.dataModels.activity(data));
   }
 
@@ -99,9 +99,7 @@ class Store {
    * @return {Promise<User>} - User first name, data for radial chart and key data
    */
   async user(userId: string): Promise<User> {
-    return await this._api
-      .get(`${userId}`, new Headers())
-      .then((data) => this.dataModels.user(data));
+    return await this._api.get(`/user/${userId}`, new Headers()).then((data) => this.dataModels.user(data));
   }
 }
 

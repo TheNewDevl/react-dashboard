@@ -20,7 +20,7 @@ const Header = () => {
             <Link to={"/"}>Accueil</Link>
           </li>
           <li>
-            <Link to={`/${user?.id}`}>Profil</Link>
+            <Link to={`/user/${user?.id}`}>Profil</Link>
           </li>
           <li>
             <a href="#">Réglage</a>
