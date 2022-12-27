@@ -22,3 +22,13 @@ $screen-sizes: (
     @content;
   }
 }
+
+@mixin fadeIn($duration: 0.3s, $delay: 0s, $ease: ease-in-out) {
+  opacity: 0;
+  animation: fadeIn $duration $ease $delay forwards;
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+}

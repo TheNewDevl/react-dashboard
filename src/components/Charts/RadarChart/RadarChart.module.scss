@@ -1,5 +1,9 @@
+@use '../../../styles/utils/mixins';
+
 .RadarChart {
+  position: relative;
   width: 100%;
+  @include mixins.fadeIn();
 
   & svg {
     border-radius: 5px;

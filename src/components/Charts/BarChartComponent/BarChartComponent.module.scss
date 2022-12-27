@@ -2,6 +2,7 @@
 
 .BarChartComponent {
   position: relative;
+  @include mixins.fadeIn();
 
   & svg {
     background-color: #FBFBFB;

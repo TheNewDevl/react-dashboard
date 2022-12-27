@@ -1,6 +1,9 @@
+@use '../../../styles/utils/mixins';
+
 .LineChart {
   position: relative;
   width: 100%;
+  @include mixins.fadeIn();
 
   & .axis {
     font-size: 12px;

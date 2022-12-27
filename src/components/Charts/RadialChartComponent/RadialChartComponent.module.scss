@@ -1,7 +1,10 @@
+@use '../../../styles/utils/mixins';
+
 .RadialChartComponent {
   position: relative;
   border-radius: 5px;
   width: 100%;
+  @include mixins.fadeIn();
 
   & svg {
     background-color: #FBFBFB;
