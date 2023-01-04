@@ -1,4 +1,4 @@
-import { ActivityData, AverageDay, performanceData, User } from "../utils/types/types";
+import { ActivityData, AverageDay, PerformanceData, User } from "../utils/types/types";
 
 class MockData {
   averageSessions(id: string): AverageDay[] {
@@ -15,7 +15,7 @@ class MockData {
     ];
   }
 
-  performance(id: string): performanceData[] {
+  performance(id: string): PerformanceData[] {
     return [
       { value: 110, category: "Intensité" },
       { value: 220, category: "Vitesse" },

@@ -1,14 +1,14 @@
 import style from "./Profil.module.scss";
 import Main from "../../Layout/Main/Main";
 import LineChartComponent from "../../components/Charts/LineChart/LineChart";
-import { KeyDataCard } from "../../components/KeyDataCard/KeyDataCard";
-import { RadarChartComponent } from "../../components/Charts/RadarChart/RadarChartComponent";
-import { BarChartComponent } from "../../components/Charts/BarChartComponent/BarChartComponent";
-import { RadialChartComponent } from "../../components/Charts/RadialChartComponent/RadialChartComponent";
-import { useStore } from "../../utils/hooks/useStore";
-import { StoreActionsEnum } from "../../utils/types/types";
-import { useUserContext } from "../../utils/context/Context";
-import { Loader } from "../../components/Loader/Loader";
+import {KeyDataCard} from "../../components/KeyDataCard/KeyDataCard";
+import {RadarChartComponent} from "../../components/Charts/RadarChart/RadarChartComponent";
+import {BarChartComponent} from "../../components/Charts/BarChartComponent/BarChartComponent";
+import {RadialChartComponent} from "../../components/Charts/RadialChartComponent/RadialChartComponent";
+import {useStore} from "../../utils/hooks/useStore";
+import {StoreActionsEnum} from "../../utils/types/types";
+import {useUserContext} from "../../utils/context/Context";
+import {Loader} from "../../components/Loader/Loader";
 
 interface ProfilProps {}
 
@@ -16,7 +16,7 @@ export const Profil = ({}: ProfilProps) => {
   //Retrieve user context
   const { user } = useUserContext();
   //Use store to fetch data
-  const { error, isLoading, ...data } = useStore(user?.id as string, StoreActionsEnum.ALL);
+  const { error, isLoading, ...data } = useStore(user?.id as string, StoreActionsEnum.ALL, 'format');
   const { perfData, averageSessions, activityData } = data;
 
   const Graphs = () => {
@@ -37,8 +37,8 @@ export const Profil = ({}: ProfilProps) => {
           </div>
           <div className={style.key_data_wrapper}>
             {user.keyData.map((data, index) => {
-              const value = Object.values(data)[0];
               const title = Object.keys(data)[0];
+              const value = data[title];
               return <KeyDataCard key={index} image={`/${title}.png`} title={title} value={value} />;
             })}
           </div>

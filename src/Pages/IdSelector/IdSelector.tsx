@@ -1,10 +1,10 @@
 import style from "./IdSelector.module.scss";
 import Main from "../../Layout/Main/Main";
-import { ChangeEvent, useState, MouseEvent, useRef, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { useUserContext } from "../../utils/context/Context";
-import { StoreActionsEnum } from "../../utils/types/types";
-import { useStore } from "../../utils/hooks/useStore";
+import {ChangeEvent, MouseEvent, useEffect, useRef, useState} from "react";
+import {useParams} from "react-router-dom";
+import {useUserContext} from "../../utils/context/Context";
+import {StoreActionsEnum} from "../../utils/types/types";
+import {useStore} from "../../utils/hooks/useStore";
 
 /**
  * Check if the input value is a valid id
@@ -31,7 +31,7 @@ export const IdSelector = () => {
   const { setUser } = useUserContext();
 
   //Store
-  const { error, user } = useStore(idState, StoreActionsEnum.USER);
+  const { error, user } = useStore(idState, StoreActionsEnum.USER, 'format');
 
   useEffect(() => {
     //if store returns an error, set the error message

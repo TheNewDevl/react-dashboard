@@ -27,14 +27,6 @@ export const RadialChartComponent = ({ scoreData }: RadialChartComponentProps) =
   const inner = [{ name: "Achieved", value: 20 }];
   const COLORS = ["#FF0101", "rgba(0,0,0,0)"];
 
-  /*
-    useEffect(() => {
-      if (scoreData.length > 0) {
-        const remaining = { name: "remaining", value: totalAchievement - scoreData[0].value };
-        setData([...scoreData, remaining]);
-      }
-    }, [scoreData]);
-  */
   const { user } = useUserContext();
 
   useEffect(() => {

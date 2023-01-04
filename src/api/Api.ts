@@ -1,5 +1,5 @@
-import { DataModels } from "../model/DataModels";
-import { ActivityData, AverageDay, performanceData, User } from "../utils/types/types";
+import { DisplayData } from "../models/DisplayData";
+import { ActivityData, AverageDay, PerformanceData, User } from "../utils/types/types";
 
 /**
  * @description This class is used to fetch data from a REST API
@@ -53,55 +53,54 @@ export class Api {
 /**
  * @description This class is used to fetch data from the Rest API
  * It will contain the different methods and endpoints to fetch data that will be used in the app
- * Data will be modified and returned in a format that is easy to use in the app
  */
 class Store {
   private readonly _api: Api;
-  private dataModels: DataModels;
+  private dataModels: DisplayData;
 
   constructor() {
     this._api = new Api("http://localhost:3000");
-    this.dataModels = new DataModels();
+    this.dataModels = new DisplayData();
   }
 
   /**
    * @param {string} userId - The user id to be used in the request
    * @return {Promise<AverageDay[]>} - Data for the Line chart
    */
-  async averageSessions(userId: string | null): Promise<AverageDay[]> {
+  async averageSessions(userId: string): Promise<any> {
     return await this._api
       .get(`/user/${userId}/average-sessions`, new Headers())
-      .then((data) => this.dataModels.averageSessions(data));
+      .then((data) => data);
   }
 
   /**
    * @param {string} userId - The user id to be used in the request
-   * @return {Promise<performanceData[]>} - Data for the Radar chart
+   * @return {Promise<PerformanceData[]>} - Data for the Radar chart
    */
-  async performance(userId: string): Promise<performanceData[]> {
+  async performance(userId: string): Promise<any> {
     return await this._api
       .get(`/user/${userId}/performance`, new Headers())
-      .then((data) => this.dataModels.performance(data));
+      .then((data) => data);
   }
 
   /**
    * @param {string} userId - The user id to be used in the request
    * @return {Promise<ActivityData[]>} - Data for the Bar chart
    */
-  async activity(userId: string): Promise<ActivityData[]> {
+  async activity(userId: string): Promise<any> {
     return await this._api
       .get(`/user/${userId}/activity`, new Headers())
-      .then((data) => this.dataModels.activity(data));
+      .then((data) => data);
   }
 
   /**
    * @param {string} userId - The user id to be used in the request
    * @return {Promise<User>} - User first name, data for radial chart and key data
    */
-  async user(userId: string): Promise<User> {
+  async user(userId: string): Promise<any> {
     return await this._api
       .get(`/user/${userId}`, new Headers())
-      .then((data) => this.dataModels.user(data));
+      .then((data) => data);
   }
 }
 

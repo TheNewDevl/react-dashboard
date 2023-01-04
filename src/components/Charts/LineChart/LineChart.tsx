@@ -1,5 +1,5 @@
 import style from "./LineChart.module.scss";
-import React, { useEffect, useRef, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import PropTypes from "prop-types";
 import {
   Legend,
@@ -12,10 +12,10 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { AverageDay, StoreActionsEnum } from "../../../utils/types/types";
-import { useUserContext } from "../../../utils/context/Context";
-import { useStore } from "../../../utils/hooks/useStore";
-import { Loader } from "../../Loader/Loader";
+import {AverageDay, StoreActionsEnum} from "../../../utils/types/types";
+import {useUserContext} from "../../../utils/context/Context";
+import {useStore} from "../../../utils/hooks/useStore";
+import {Loader} from "../../Loader/Loader";
 
 /**
  * @param {Object[]} graphData - The data to display on the graph
@@ -35,7 +35,7 @@ const LineChartComponent = ({ graphData }: { graphData?: AverageDay[] }) => {
   graphData && useEffect(() => graphData && setData(graphData), [graphData]);
 
   //If perfData is not provided as a prop, fetch data from the store
-  const { averageSessions, isLoading, error } = useStore(userId as string, StoreActionsEnum.AVERAGE);
+  const { averageSessions, isLoading, error } = useStore(userId as string, StoreActionsEnum.AVERAGE, 'format');
   if (!graphData) {
     useEffect(() => {
       user && setUserId(user.id || "");

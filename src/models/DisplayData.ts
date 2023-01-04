@@ -1,6 +1,6 @@
-import { ActivityData, AverageDay, performanceData, User } from "../utils/types/types";
+import {ActivityData, AllFormattedData, AverageDay, PerformanceData, User} from "../utils/types/types";
 
-export class DataModels {
+export class DisplayData {
   /**
    * Return an array of objects with the average session length per day mapped from API response data.
    * If any error occurs in the fetch, return and empty array.
@@ -46,7 +46,7 @@ export class DataModels {
    * @return {{value: number, category: string}[]}   */
   performance(data: {
     data: { data: { value: number; kind: number }[]; kind: { [key: number]: string } };
-  }): performanceData[] {
+  }): PerformanceData[] {
     if ( data?.data?.kind && data?.data?.data?.length > 0 ) {
       // Format the catégories to display
       Object.entries(data.data.kind).map(v => {
@@ -112,7 +112,7 @@ export class DataModels {
       //dayScore
       user.dayScore.push({
         name: "Score",
-        value: data.data.todayScore ?? data.data.score ?? 0,
+        value: data.data.todayScore * 100 ?? data.data.score * 100 ?? 0,
       });
 
       //keyData
@@ -132,5 +132,14 @@ export class DataModels {
     }
 
     return user;
+  }
+
+  all(userData:any, activityData:any, performanceData:any, sessionData:any): AllFormattedData {
+    return {
+      user: this.user(userData),
+      activityData: this.activity(activityData),
+      perfData: this.performance(performanceData),
+      averageSessions: this.averageSessions(sessionData),
+    }
   }
 }

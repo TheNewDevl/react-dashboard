@@ -1,14 +1,14 @@
 import style from "./RadarChart.module.scss";
-import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from "recharts";
-import { useEffect, useState } from "react";
+import {PolarAngleAxis, PolarGrid, PolarRadiusAxis, Radar, RadarChart, ResponsiveContainer} from "recharts";
+import {useEffect, useState} from "react";
 import PropTypes from "prop-types";
-import { performanceData, StoreActionsEnum } from "../../../utils/types/types";
-import { useStore } from "../../../utils/hooks/useStore";
-import { useUserContext } from "../../../utils/context/Context";
-import { Loader } from "../../Loader/Loader";
+import {PerformanceData, StoreActionsEnum} from "../../../utils/types/types";
+import {useStore} from "../../../utils/hooks/useStore";
+import {useUserContext} from "../../../utils/context/Context";
+import {Loader} from "../../Loader/Loader";
 
 interface RadarChartProps {
-  perfData?: performanceData[];
+  perfData?: PerformanceData[];
 }
 
 /**
@@ -19,15 +19,15 @@ interface RadarChartProps {
  * @return {JSX.Element}
  */
 export const RadarChartComponent = ({ perfData }: RadarChartProps) => {
-  const [data, setData] = useState<performanceData[]>([]);
+  const [data, setData] = useState<PerformanceData[]>([]);
   const [userId, setUserId] = useState<string | undefined>(undefined);
 
   //If perfData is provided as a prop, use that data
   perfData && useEffect(() => perfData && setData(perfData), [perfData]);
-  const { perfData: pData, isLoading, error } = useStore(userId as string, StoreActionsEnum.PERFORMANCE);
 
   //If perfData is not provided as a prop, fetch data from the store
   const { user } = useUserContext();
+  const { perfData: pData, isLoading, error } = useStore(userId as string, StoreActionsEnum.PERFORMANCE, 'format');
   if (!perfData) {
     useEffect(() => {
       user && setUserId(user.id || "");

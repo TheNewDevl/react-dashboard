@@ -10,12 +10,12 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
-import { ActivityData, StoreActionsEnum } from "../../../utils/types/types";
-import { useStore } from "../../../utils/hooks/useStore";
-import { useUserContext } from "../../../utils/context/Context";
-import { Loader } from "../../Loader/Loader";
+import {ActivityData, StoreActionsEnum} from "../../../utils/types/types";
+import {useStore} from "../../../utils/hooks/useStore";
+import {useUserContext} from "../../../utils/context/Context";
+import {Loader} from "../../Loader/Loader";
 
 interface BarChartComponentProps {
   activityData?: ActivityData[];
@@ -23,7 +23,7 @@ interface BarChartComponentProps {
 
 /**
  * @param {Object} props component props
- * @param {Object[]} props.activityData - The data to display on the graph
+ * @param {Array} props.activityData - The data to display on the graph
  * @param {number} props.activityData[].day - The day of the session
  * @param {number} props.activityData[].kilogram - Bar 1 value
  * @param {number} props.activityData[].calories - Bar 2 value
@@ -37,7 +37,7 @@ export const BarChartComponent = ({ activityData }: BarChartComponentProps) => {
 
   //If perfData is provided as a prop, use that data
   activityData && useEffect(() => activityData && setData(activityData), [activityData]);
-  const { activityData: aData, isLoading, error } = useStore(userId as string, StoreActionsEnum.ACTIVITY);
+  const { activityData: aData, isLoading, error } = useStore(userId as string, StoreActionsEnum.ACTIVITY, 'format');
 
   //If perfData is not provided as a prop, fetch data from the store
   const { user } = useUserContext();

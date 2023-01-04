@@ -3,7 +3,7 @@ export interface AverageDay {
   sessionLength: number;
 }
 
-export interface performanceData {
+export interface PerformanceData {
   value: number;
   category: string;
 }
@@ -16,7 +16,7 @@ export interface ActivityData {
 
 export interface UseStoreReturn {
   averageSessions: AverageDay[];
-  perfData: performanceData[];
+  perfData: PerformanceData[];
   activityData: ActivityData[];
   user: User;
   error: string | null;
@@ -45,4 +45,11 @@ export enum StoreActionsEnum {
   PERFORMANCE,
   ACTIVITY,
   USER,
+}
+
+export type AllFormattedData = {
+  user: User;
+  activityData: ActivityData[];
+  perfData: PerformanceData[];
+  averageSessions: AverageDay[];
 }
