@@ -1,0 +1,9 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["./src"],
+  "out": "doc",
+  "entryPointStrategy": "expand",
+  "excludeNotDocumented": true,
+  "commentStyle": "all",
+  "categorizeByGroup": true
+}
