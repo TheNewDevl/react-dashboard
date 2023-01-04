@@ -1,8 +1,9 @@
 import {useEffect, useState} from "react";
 import Store from "../../api/Api";
-import { StoreActionsEnum, UseStoreReturn } from "../types/types";
+import {StoreActionsEnum, UseStoreReturn} from "../types/types";
 import MockData from "../../mocks/mockData";
 import {DisplayData} from "../../models/DisplayData";
+import {defaultFormatter} from "../../mocks/formatter";
 
 /**
  * Custom hook to fetch data from the store.
@@ -23,7 +24,7 @@ export const useStore = (userId: string, type: StoreActionsEnum, needFormattedDa
       const store = userId === "sample" ? MockData : Store;
       //Instantiate formatter only if needed
       const needToFormat = needFormattedData === 'format' && userId !== "sample";
-      const formatter = needToFormat ? new DisplayData() : null;
+      const formatter = needToFormat ? new DisplayData() : defaultFormatter;
 
       try {
         setIsLoading(true);
@@ -35,28 +36,28 @@ export const useStore = (userId: string, type: StoreActionsEnum, needFormattedDa
               store.activity(userId),
               store.user(userId),
             ]);
-            const formattedData = needToFormat ? formatter!.all(user, activityData, perfData, averageSessions) : null;
-            setDatas(formattedData ?? {averageSessions, perfData, activityData, user});
+            const formattedData = formatter.all(user, activityData, perfData, averageSessions);
+            setDatas(formattedData);
             break;
           }
           case StoreActionsEnum.AVERAGE: {
             const data = await store.averageSessions(userId);
-            setDatas({averageSessions: needToFormat ? formatter!.averageSessions(data) : data});
+            setDatas({averageSessions: formatter.averageSessions(data)});
             break;
           }
           case StoreActionsEnum.ACTIVITY: {
             const data = await store.activity(userId);
-            setDatas({activityData: needToFormat ? formatter!.activity(data) : data});
+            setDatas({activityData: formatter.activity(data)});
             break;
           }
           case StoreActionsEnum.PERFORMANCE: {
             const data = await store.performance(userId);
-            setDatas({ perfData: needToFormat ? formatter!.performance(data) : data });
+            setDatas({ perfData: formatter.performance(data) });
             break;
           }
           case StoreActionsEnum.USER: {
             const data = await store.user(userId);
-            setDatas({ user: needToFormat ? formatter!.user(data) : data });
+            setDatas({ user: formatter.user(data)});
             break;
           }
         }
