@@ -47,7 +47,7 @@ Front end will make the call using this base url : "http://localhost:3000". You 
 - Run `npm install`
 - Run `npm run dev`
 - Open your browser and go to http://localhost:5173/ or the given url by Vite
-- Enter a user ID, if the user id is invalid you will see and error and will not be able to navigate in the app
+- Enter a user ID (e.g. 12, 18...) , if the user id is invalid you will see and error and will not be able to navigate in the app
 - You can also choose to see demo data by clicking on the button "Données d'exemple"
 - Enjoy!
 
@@ -68,7 +68,7 @@ These routes are protected, you will be redirected to the id selector page if yo
 ### 2.4 Next steps
 
 - Tests with Vitest
-- Implement de missing pages
+- Implement the missing pages
 
 ## Author
 
