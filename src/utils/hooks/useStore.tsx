@@ -23,7 +23,7 @@ export const useStore = (userId: string, type: StoreActionsEnum, needFormattedDa
       //Use Mock store or real store depending on user id
       const store = userId === "sample" ? MockData : Store;
       //Instantiate formatter only if needed
-      const needToFormat = needFormattedData === 'format' && userId !== "sample";
+      const needToFormat = needFormattedData === 'format';
       const formatter = needToFormat ? new DisplayDataFormatter() : defaultFormatter;
 
       try {

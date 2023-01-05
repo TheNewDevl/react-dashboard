@@ -15,10 +15,10 @@ export interface ActivityData {
 }
 
 export interface UseStoreReturn {
-  averageSessions: AverageDay[];
-  perfData: PerformanceData[];
-  activityData: ActivityData[];
-  user: User;
+  averageSessions: AverageDay[] | AverageResponse;
+  perfData: PerformanceData[] | PerformanceResponse;
+  activityData: ActivityData[] | ActivityResponse;
+  user: User | UserResponse;
   error: string | null;
   isLoading: boolean;
 }
