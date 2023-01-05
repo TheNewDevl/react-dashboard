@@ -1,4 +1,3 @@
-import { DisplayData } from "../models/DisplayData";
 import {
   ActivityResponse,
   AverageResponse,
@@ -65,11 +64,9 @@ export class Api {
  */
 class Store {
   private readonly _api: Api;
-  private dataModels: DisplayData;
 
   constructor() {
     this._api = new Api("http://localhost:3000");
-    this.dataModels = new DisplayData();
   }
 
   /**

@@ -8,17 +8,24 @@ import {useStore} from "../../utils/hooks/useStore";
 
 /**
  * Check if the input value is a valid id
- * @param {string} value
+ * @param {string} value to check
  * @return {boolean} true if the value is a valid id
  */
 const isValidId = (value: string | undefined) => {
   if (value) {
     const v = value.trim();
-    return value === "sample" || v.length > 0 && v.length < 10 && !isNaN(Number(v));
+    return value === "sample" || (v.length > 0 && v.length < 10 && !isNaN(Number(v)));
   }
   return false;
 };
 
+/**
+ * @component IdSelector component
+ * If protected route is enabled, this component is used to display a form to enter the user's id
+ * @return {JSX.Element}
+ * @example
+ * <IdSelector />
+ */
 export const IdSelector = () => {
   const [inputValue, setInputValue] = useState("");
   const errorRef = useRef<HTMLParagraphElement | null>(null);
@@ -83,7 +90,7 @@ export const IdSelector = () => {
     <Main>
       <form className={style.IdSelector} action="">
         <label htmlFor="id-selector">
-          <span className={style.red}>Oups</span>, vous n'avez pas renseigné d'identifiant. <br />
+          <span className={style.red}>Oups</span>, vous n&apos;avez pas renseigné d&apos;identifiant. <br />
           <span className={style.small}>Veuillez le renseigner ci dessous.</span>
           <input
             value={inputValue}

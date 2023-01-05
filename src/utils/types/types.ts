@@ -60,6 +60,7 @@ export interface AverageResponse {
     sessions: { day: number, sessionLength: number }[];
   };
 }
+
 export interface ActivityResponse {
   data: {
     sessions : { day: string, kilogram: number, calories: number }[];

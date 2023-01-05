@@ -9,11 +9,12 @@ interface TagProps {
 }
 
 /**
- * @param {string} icon - The icon of the tag
- * @param {string} alt - The alt of the icon
- * @param {string} link - The link of the icon
+ * @component Tag component, it is used to display a tag with an icon.
+ * @param {object} props - The props of the component
+ * @param {string} props.icon - The icon of the tag (must be a valid path to the img src attribute)
+ * @param {string} props.alt - The alt of the icon
+ * @param {string} props.link - The link to redirect to when the tag is clicked
  * @returns {JSX.Element} - The tag component
- * @constructor
  * @example
  * <Tag icon="./meditation.svg" alt="Meditation" />
  */

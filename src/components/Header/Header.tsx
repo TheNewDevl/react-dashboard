@@ -4,8 +4,11 @@ import { UserContext } from "../../utils/context/Context";
 import { useContext } from "react";
 
 /**
+ * @Component - The header component
+ * It uses the context to get the user
+ * @example
+ * <Header />
  * @return {JSX.Element}
- * @constructor
  */
 const Header = () => {
   const { user } = useContext(UserContext);

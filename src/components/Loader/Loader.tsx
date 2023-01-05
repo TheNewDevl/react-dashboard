@@ -1,8 +1,12 @@
 import style from "./Loader.module.scss";
 
-interface LoaderProps {}
-
-export const Loader = ({}: LoaderProps) => {
+/**
+ * @component Loader component
+ * @return {JSX.Element}
+ * @example
+ * <Loader />
+ */
+export const Loader = () => {
   return <div className={style.Loader}></div>;
 };
 

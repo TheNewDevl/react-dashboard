@@ -1,10 +1,17 @@
+import {
+  ActivityResponse,
+  AverageResponse,
+  PerformanceResponse,
+  UserResponse
+} from "../utils/types/types";
+
 /** Mock formatter. It just returns the given data. */
 export const defaultFormatter = {
-  averageSessions: (data: any) => data,
-  activity: (data: any) => data,
-  performance: (data: any) => data,
-  user: (data: any) => data,
-  all(userData: any, activityData:any, performanceData:any, sessionData:any): any {
+  averageSessions: (data: AverageResponse) => data,
+  activity: (data: ActivityResponse) => data,
+  performance: (data: PerformanceResponse) => data,
+  user: (data: UserResponse) => data,
+  all(userData: UserResponse, activityData:ActivityResponse, performanceData:PerformanceResponse, sessionData:AverageResponse) {
     return {
       user: this.user(userData),
       activityData: this.activity(activityData),

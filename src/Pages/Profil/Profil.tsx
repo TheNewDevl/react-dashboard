@@ -10,16 +10,27 @@ import {StoreActionsEnum} from "../../utils/types/types";
 import {useUserContext} from "../../utils/context/Context";
 import {Loader} from "../../components/Loader/Loader";
 
-interface ProfilProps {}
-
-export const Profil = ({}: ProfilProps) => {
+/**
+ * @component Profil component
+ * Display the user's data and charts
+ * Also contain a loader that is displayed while the data is being fetched
+ * @return {JSX.Element}
+ * @example
+ * <Profil />
+ */
+export const Profil = () => {
   //Retrieve user context
   const { user } = useUserContext();
   //Use store to fetch data
   const { error, isLoading, ...data } = useStore(user?.id as string, StoreActionsEnum.ALL, 'format');
   const { perfData, averageSessions, activityData } = data;
 
-  const Graphs = () => {
+  /**
+   * If the store returns an error, display it, else display the graphs
+   * @return {JSX.Element | null}
+   * @example <ErrorOrGraphs />
+   */
+  const ErrorOrGraphs = () => {
     if (error) {
       return <p>{error}</p>;
     } else if (activityData && perfData && averageSessions && user?.dayScore && user.keyData) {
@@ -53,7 +64,7 @@ export const Profil = ({}: ProfilProps) => {
         Bonjour <span>{user?.firstName && user.firstName}</span>
       </h1>
       <p>Félicitation ! Vous avez explosé vos objectifs hier 👏</p>
-      {isLoading ? <Loader /> : <Graphs />}
+      {isLoading ? <Loader /> : <ErrorOrGraphs />}
     </Main>
   );
 };

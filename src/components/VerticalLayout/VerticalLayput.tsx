@@ -29,8 +29,11 @@ const Tags: { alt: string; icon: string; link: string }[] = [
 ];
 
 /**
- * @return {JSX.Element}
- * @constructor
+ * @component VerticalLayout component
+ * Contains the tags and copy right
+ * @returns {JSX.Element}
+ * @example
+ * <VerticalLayout />
  */
 const VerticalLayout = () => {
   const { user } = useUserContext();

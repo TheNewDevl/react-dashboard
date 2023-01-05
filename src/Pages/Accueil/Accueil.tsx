@@ -3,9 +3,14 @@ import { useUserContext } from "../../utils/context/Context";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/Button/Button";
 
-interface AccueilProps {}
-
-export const Accueil = ({}: AccueilProps) => {
+/**
+ * @component Home page component
+ * Page not totally implemented. It displays the user's name and a button to redirect to the user's page
+ * @return {JSX.Element}
+ * @example
+ * <Accueil />
+ */
+export const Accueil = () => {
   const { user } = useUserContext();
   const navigate = useNavigate();
 

@@ -2,26 +2,27 @@ import "./Main.scss";
 import { PropsWithChildren, useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 
-interface MainProps extends PropsWithChildren {}
-
 /**
- * @param {PropsWithChildren} children - The children of the component
+ * @component Main component, it is used to display the main content of the app.
+ * All the content must be wrapped inside this component because its size is calculated based on
+ * header and vertical layout size( because sizes change depending on the screen size)
+ * @param {object} props - The props of the component
+ * @param {JSX.Element} props.children - The content to display inside the main component
  * @returns {JSX.Element} - The main component
- * @constructor
  * @example
  * <Main>
- *  <GraphsContainer>
+ *  <section>
  *    <Graph />
- *  </GraphsContainer>
+ *  </section>
  * </Main>
  */
-const Main = ({ children }: MainProps) => {
+const Main = ({ children }: PropsWithChildren) => {
   const mainRef = useRef<HTMLElement | null>(null);
   const [isResizing, setIsResizing] = useState(false);
 
   useEffect(() => {
-    /** set main margin-top = header height */
-    const handleMarginTop = () => {
+    /** calculate margin top and width depending on header and vertical layout size */
+    const handleMarginAndWidth = () => {
       const header = document.querySelector("header");
       const verticalLayout = document.querySelector(".VerticalLayout");
 
@@ -38,13 +39,17 @@ const Main = ({ children }: MainProps) => {
         }) `
       );
     };
-    handleMarginTop();
+    handleMarginAndWidth();
+    /**
+     * Prevents the handleMarginAndWidth function from being called multiple times
+     * @return {false | void}
+     */
     const handleResize = () => !isResizing && setIsResizing(true);
     if (isResizing) {
       setTimeout(() => {
         setIsResizing(false);
-        handleMarginTop();
-      }, 10);
+        handleMarginAndWidth();
+      }, 50);
     }
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);

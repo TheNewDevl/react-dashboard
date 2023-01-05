@@ -1,6 +1,15 @@
-import { ActivityData, AverageDay, PerformanceData, User } from "../utils/types/types";
+/* eslint @typescript-eslint/no-unused-vars: 0 */
 
+import {ActivityData, AverageDay, PerformanceData, User} from "../utils/types/types";
+
+/**
+ * @description Mock the Store class
+ * Contain the same methods as the Store class but return mock data
+ * @see src/utils/store.ts
+ * Note that the methods are not async and return data already formatted
+ */
 class MockData {
+  /** Return mock formatted data for the average sessions to display */
   averageSessions(id: string): AverageDay[] {
     return [
       { day: "D", sessionLength: 100 },
@@ -15,6 +24,7 @@ class MockData {
     ];
   }
 
+  /** Return mock formatted data for the perf graph to display */
   performance(id: string): PerformanceData[] {
     return [
       { value: 110, category: "Intensité" },
@@ -26,6 +36,7 @@ class MockData {
     ];
   }
 
+  /** Return mock formatted data to be used in the activity graph */
   activity(id: string): ActivityData[] {
     return [
       { day: 1, "Poids (kg)": 80, "Calories brulées (kCal)": 240 },
@@ -42,6 +53,7 @@ class MockData {
     ];
   }
 
+  /** Return user mock formatted data to be used in app and graphs */
   user(id: string): User {
     return {
       dayScore: [{ name: "score", value: 25 }],

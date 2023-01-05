@@ -8,9 +8,11 @@ interface KeyDataCardProps {
 }
 
 /**
- * @param image - The icon image to display
- * @param title - The legend of the card
- * @param value - The value to display
+ * @component KeyDataCard component
+ * @param {object} props - The props of the component
+ * @param {string} props.image - The icon image to display ( Must be a valid path to the img src attribute)
+ * @param {string} props.title - The legend of the card
+ * @param {string} props.value - The value to display
  * @return {JSX.Element}
  * @example
  * <KeyDataCard image="./Calories.png" title="Calories" value="1,200kCal" />

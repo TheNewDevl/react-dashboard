@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import Store from "../../api/Api";
 import {StoreActionsEnum, UseStoreReturn} from "../types/types";
 import MockData from "../../mocks/mockData";
-import {DisplayData} from "../../models/DisplayData";
+import {DisplayDataFormatter} from "../../models/DisplayDataFormatter";
 import {defaultFormatter} from "../../mocks/formatter";
 
 /**
@@ -24,7 +24,7 @@ export const useStore = (userId: string, type: StoreActionsEnum, needFormattedDa
       const store = userId === "sample" ? MockData : Store;
       //Instantiate formatter only if needed
       const needToFormat = needFormattedData === 'format' && userId !== "sample";
-      const formatter = needToFormat ? new DisplayData() : defaultFormatter;
+      const formatter = needToFormat ? new DisplayDataFormatter() : defaultFormatter;
 
       try {
         setIsLoading(true);
