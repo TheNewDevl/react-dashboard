@@ -6,7 +6,7 @@ import {RadarChartComponent} from "../../components/Charts/RadarChart/RadarChart
 import {BarChartComponent} from "../../components/Charts/BarChartComponent/BarChartComponent";
 import {RadialChartComponent} from "../../components/Charts/RadialChartComponent/RadialChartComponent";
 import {useStore} from "../../utils/hooks/useStore";
-import {StoreActionsEnum} from "../../utils/types/types";
+import {ActivityData, AverageDay, PerformanceData, StoreActionsEnum} from "../../utils/types/types";
 import {useUserContext} from "../../utils/context/Context";
 import {Loader} from "../../components/Loader/Loader";
 
@@ -38,11 +38,11 @@ export const Profil = () => {
         <div className={style.content_wrapper}>
           <div className={style.graph_container}>
             <div className={style.graph_full_width}>
-              <BarChartComponent activityData={activityData} />
+              <BarChartComponent activityData={activityData as ActivityData[]} />
             </div>
             <div className={style.graph_flex}>
-              <RadarChartComponent perfData={perfData} />
-              <LineChartComponent graphData={averageSessions} />
+              <RadarChartComponent perfData={perfData as PerformanceData[]} />
+              <LineChartComponent graphData={averageSessions as AverageDay[]} />
               <RadialChartComponent scoreData={user.dayScore} />
             </div>
           </div>

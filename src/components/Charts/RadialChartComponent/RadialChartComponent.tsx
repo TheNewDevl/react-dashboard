@@ -1,5 +1,5 @@
 import style from "./RadialChartComponent.module.scss";
-import { Cell, Legend, Pie, PieChart, ResponsiveContainer } from "recharts";
+import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 import { useEffect, useRef, useState } from "react";
 import { useUserContext } from "../../../utils/context/Context";
 
@@ -8,19 +8,15 @@ interface ScoreData {
   value: number;
 }
 
-interface RadialChartComponentProps {
-  scoreData?: ScoreData[];
-}
-
 /**
- * Will display a radial chart with the score of the user
- * @param {Object} props component props
- * @param {Object[]} props.scoreData - The data to display on the graph
- * @param {string} props.scoreData[].name - The name of the score
- * @param {number} props.scoreData[].value - The percentage score
+ * @component Radial chart component
+ * Renders a radial chart with the user's score data.
+ * @important As fetch user route send this data together, data is already in the user store context to prevent unnecessary fetches.
  * @return {JSX.Element}
+ * @example
+ * <RadialChartComponent />
  */
-export const RadialChartComponent = ({ scoreData }: RadialChartComponentProps) => {
+export const RadialChartComponent = () => {
   const [data, setData] = useState<ScoreData[]>([]);
   const svgRef = useRef<HTMLDivElement | null>(null);
   const totalAchievement = 100;

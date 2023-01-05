@@ -18,9 +18,12 @@ import {useStore} from "../../../utils/hooks/useStore";
 import {Loader} from "../../Loader/Loader";
 
 /**
- * @param {Object[]} graphData - The data to display on the graph
- * @param {string} graphData[].day - The day of the session
- * @param {number} graphData[].sessionLength - The average length of the day
+ * @component Line chart component
+ * Renders a line chart with the user's average data.
+ * Data can be passed as props or fetched from the store.
+ * Data needs to be properly formatted.
+ * @param {Object} props component props
+ * @param {{day: string, sessionLength: number }[] | undefined} props.graphData - The data to display on the graph
  * @return {JSX.Element}
  * @example
  * <LineChartComponent graphData={data} />
@@ -31,15 +34,15 @@ const LineChartComponent = ({ graphData }: { graphData?: AverageDay[] }) => {
   const [data, setData] = useState<AverageDay[]>([]);
   const [userId, setUserId] = useState<string | undefined>(undefined);
 
-  //If perfData is provided as a prop, use that data
+  //If graphData is provided as a prop, use that data
   graphData && useEffect(() => graphData && setData(graphData), [graphData]);
 
-  //If perfData is not provided as a prop, fetch data from the store
+  //If graphData is not provided as a prop, fetch data from the store
   const { averageSessions, isLoading, error } = useStore(userId as string, StoreActionsEnum.AVERAGE, 'format');
   if (!graphData) {
     useEffect(() => {
       user && setUserId(user.id || "");
-      averageSessions && setData(averageSessions);
+      averageSessions && setData(averageSessions as AverageDay[]);
     }, [user, averageSessions]);
   }
 
@@ -106,7 +109,7 @@ const LineChartComponent = ({ graphData }: { graphData?: AverageDay[] }) => {
 
   /**
    * Return custom ticks for the XAxis, for convenience the date will contain last sunday to fill the line
-   * But we only want to display the 7 day of the week so we recalculate the ticks position depending on chart width
+   * But we only want to display the 7 day of the week, so we recalculate the ticks position depending on chart width
    * @param {Object} props
    * @param {number} props.y y axis tick position
    * @param {number} props.x x axis tick position
@@ -115,7 +118,7 @@ const LineChartComponent = ({ graphData }: { graphData?: AverageDay[] }) => {
    */
   const CustomizedAxisTick = ({ x, y, payload }: any) => {
     const p = 20;
-    let spacing = chartRef.current ? ((chartRef.current.clientWidth - p * 2) / 6) * (payload.index - 1) + p : x;
+    const spacing = chartRef.current ? ((chartRef.current.clientWidth - p * 2) / 6) * (payload.index - 1) + p : x;
     return payload.index % 8 === 0 ? null : (
       <g transform={`translate(${spacing},${y})`}>
         <text className={style.axis} x={0} y={0} textAnchor="middle" fill="#666">

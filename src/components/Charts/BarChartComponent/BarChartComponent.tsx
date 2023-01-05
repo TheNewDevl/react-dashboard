@@ -22,12 +22,15 @@ interface BarChartComponentProps {
 }
 
 /**
+ * @component Bar chart component
+ * Renders a bar chart with the user's activity data.
+ * Data can be passed as props or fetched from the store
+ * Data needs to be properly formatted
  * @param {Object} props component props
- * @param {Array} props.activityData - The data to display on the graph
- * @param {number} props.activityData[].day - The day of the session
- * @param {number} props.activityData[].kilogram - Bar 1 value
- * @param {number} props.activityData[].calories - Bar 2 value
+ * @param {{day: number, kilogram: number, calories: number}[]} props.activityData - The data to display on the graph
  * @return {JSX.Element}
+ * @example
+ * <BarChartComponent activityData={activityData} />
  */
 export const BarChartComponent = ({ activityData }: BarChartComponentProps) => {
   const [data, setData] = useState<ActivityData[]>([]);
@@ -35,16 +38,16 @@ export const BarChartComponent = ({ activityData }: BarChartComponentProps) => {
   const margin = { top: 24, right: 30, left: 40, bottom: 24 };
   const ticksStyle = { fontSize: "14px", fontWeight: 500, fill: "#9B9EAC" };
 
-  //If perfData is provided as a prop, use that data
+  //If activityData is provided as a prop, use that data
   activityData && useEffect(() => activityData && setData(activityData), [activityData]);
   const { activityData: aData, isLoading, error } = useStore(userId as string, StoreActionsEnum.ACTIVITY, 'format');
 
-  //If perfData is not provided as a prop, fetch data from the store
+  //If activityData is not provided as a prop, fetch data from the store
   const { user } = useUserContext();
   if (!activityData) {
     useEffect(() => {
       user && setUserId(user.id || "");
-      aData && setData(aData);
+      aData && setData(aData as ActivityData[]);
     }, [user, aData]);
   }
 

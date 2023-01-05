@@ -1,16 +1,16 @@
 import { createContext, PropsWithChildren, useContext, useState } from "react";
-import { User } from "../types/types";
+import {User, UserResponse} from "../types/types";
 
 interface UserContextProps {
   user: User | undefined;
-  setUser: (user: User) => void;
+  setUser: (user: User | UserResponse) => void;
 }
 
 export const UserContext = createContext({} as UserContextProps);
 
 export const UserProvider = ({ children }: PropsWithChildren) => {
   const [user, setUserState] = useState<User>();
-  const setUser = (user: User): void => setUserState(user);
+  const setUser = (user: User | UserResponse): void => setUserState(user as User);
 
   return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>;
 };

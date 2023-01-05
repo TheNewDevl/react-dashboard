@@ -12,11 +12,15 @@ interface RadarChartProps {
 }
 
 /**
+ * @component Radar chart component
+ * Renders a radar chart with the user's performance data.
+ * Data can be passed as props or fetched from the store.
+ * Data needs to be properly formatted.
  * @param {Object} props  react props
- * @param {Array} props.perfData  the array of performance data
- * @param {number} props.perfData[].value  the value of the performance data
- * @param {string} props.perfData[].category  the category of the performance data
+ * @param {{value: number, category: string}[] | undefined} props.perfData  array containing objects with a value and a category
  * @return {JSX.Element}
+ * @example
+ * <RadarChartComponent perfData={data} />
  */
 export const RadarChartComponent = ({ perfData }: RadarChartProps) => {
   const [data, setData] = useState<PerformanceData[]>([]);
@@ -31,7 +35,7 @@ export const RadarChartComponent = ({ perfData }: RadarChartProps) => {
   if (!perfData) {
     useEffect(() => {
       user && setUserId(user.id || "");
-      pData && setData(pData);
+      pData && setData(pData as PerformanceData[]);
     }, [user, pData]);
   }
 
