@@ -9,6 +9,7 @@ import {useStore} from "../../utils/hooks/useStore";
 import {ActivityData, AverageDay, PerformanceData, StoreActionsEnum} from "../../utils/types/types";
 import {useUserContext} from "../../utils/context/Context";
 import {Loader} from "../../components/Loader/Loader";
+import {useEffect} from "react";
 
 /**
  * @component Profil component
@@ -21,6 +22,10 @@ import {Loader} from "../../components/Loader/Loader";
 export const Profil = () => {
   //Retrieve user context
   const { user } = useUserContext();
+  useEffect(() => {
+    document.title = `Profil de ${user?.firstName}`;
+  }, []);
+
   //Use store to fetch data
   const { error, isLoading, ...data } = useStore(user?.id as string, StoreActionsEnum.ALL, 'format');
   const { perfData, averageSessions, activityData } = data;
@@ -43,7 +48,7 @@ export const Profil = () => {
             <div className={style.graph_flex}>
               <RadarChartComponent perfData={perfData as PerformanceData[]} />
               <LineChartComponent graphData={averageSessions as AverageDay[]} />
-              <RadialChartComponent scoreData={user.dayScore} />
+              <RadialChartComponent />
             </div>
           </div>
           <div className={style.key_data_wrapper}>

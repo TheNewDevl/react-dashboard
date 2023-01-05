@@ -2,6 +2,7 @@ import Main from "../../Layout/Main/Main";
 import { useUserContext } from "../../utils/context/Context";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/Button/Button";
+import {useEffect} from "react";
 
 /**
  * @component Home page component
@@ -13,6 +14,10 @@ import { Button } from "../../components/Button/Button";
 export const Accueil = () => {
   const { user } = useUserContext();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.title = `SportSee - ${user?.firstName}`;
+  }, []);
 
   return (
     <Main>

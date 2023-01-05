@@ -27,6 +27,9 @@ const isValidId = (value: string | undefined) => {
  * <IdSelector />
  */
 export const IdSelector = () => {
+  useEffect(() => {
+    document.title = "SportSee - Login";
+  }, []);
   const [inputValue, setInputValue] = useState("");
   const errorRef = useRef<HTMLParagraphElement | null>(null);
 
