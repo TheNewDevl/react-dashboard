@@ -1,9 +1,11 @@
+@use "sass:math";
+
 @function clampCalculator($min-size, $max-size, $min-screen-width: 375px, $max-screen-width:1440px) {
-  $min-size: $min-size / 16px * 1rem;
-  $max-size: $max-size / 16px * 1rem;
-  $min-screen-width: $min-screen-width / 16px * 1rem;
-  $max-screen-width: $max-screen-width / 16px * 1rem;
-  $slope: ($max-size - $min-size) / ($max-screen-width - $min-screen-width);
+  $min-size: math.div($min-size, 16px) * 1rem;
+  $max-size:  math.div($max-size, 16px) * 1rem;
+  $min-screen-width: math.div($min-screen-width, 16px) * 1rem;
+  $max-screen-width: math.div($max-screen-width, 16px) * 1rem;
+  $slope: math.div(($max-size - $min-size), ($max-screen-width - $min-screen-width));
   $y-axis-intersection: -1 * $min-screen-width * $slope + $min-size;
   $return-value: clamp(#{$min-size}, #{$y-axis-intersection} + #{$slope} * 100vw, #{$max-size});
   @return $return-value;
